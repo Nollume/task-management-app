@@ -3,7 +3,7 @@
     class="h-14 w-full bg-slate-200 dark:bg-gray-800 flex items-center justify-start gap-2 px-4"
   >
     <div
-      class="logo font-bold text-2xl tracking-widest bg-gradient-to-r from-indigo-500 to-amber-400 bg-clip-text text-transparent"
+      class="logo select-none font-bold text-2xl tracking-widest bg-gradient-to-r from-indigo-500 to-amber-400 bg-clip-text text-transparent"
     >
       ||||
     </div>
