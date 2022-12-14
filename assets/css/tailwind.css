@@ -1,12 +1,21 @@
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   body {
-    @apply bg-slate-300 dark:bg-neutral-900 dark:text-neutral-200;
+    @apply bg-slate-300 dark:bg-gray-900 text-gray-900 dark:text-neutral-200;
+    font-family: "Fredoka", sans-serif;
   }
 }
 
 @layer components {
+  .headline-container:hover h1,
+  .headline-container:hover .arrow {
+    @apply text-indigo-400;
+  }
+  .input {
+    @apply w-full px-2 py-1 placeholder:text-gray-900/40 dark:placeholder:text-neutral-200/20 bg-slate-200 dark:bg-gray-800 outline-none border border-gray-900/10 dark:border-neutral-200/10;
+  }
 }

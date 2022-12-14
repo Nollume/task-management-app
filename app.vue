@@ -1,20 +1,12 @@
 <template>
-  <div class="h-screen">WHAT!!!</div>
-  <button
-    @click="setColorTheme($colorMode.preference === 'dark' ? 'light' : 'dark')"
-  >
-    theme
-  </button>
+  <div class="h-screen relative flex flex-col">
+    <TheHeader  />
+    <MainContent />
+  </div>
 </template>
 
 <script setup lang="ts">
-import { useStoreStore } from "~/stores/store";
-const store = useStoreStore();
-/**
- * dark/light MODE
- */
-type Theme = "light" | "dark";
-const setColorTheme = (newTheme: Theme) => {
-  useColorMode().preference = newTheme;
-};
+import { useBoardStore } from "~/stores/board";
+const store = useBoardStore();
+
 </script>
