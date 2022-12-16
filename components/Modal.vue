@@ -2,11 +2,11 @@
   <Teleport to="body">
     <Transition name="modal">
       <div
-        class="flex items-center justify-center fixed inset-0 bg-black/40 z-50"
+        class="flex items-center justify-center fixed top-0 w-full min-h-full bg-black/40 z-50"
         v-if="openModal"
       >
         <div
-          class="w-[90%] max-w-xl p-4 rounded-xl bg-slate-200 dark:bg-gray-800"
+          class="w-[90%] max-w-xl p-4 rounded-xl bg-slate-200 dark:bg-gray-800 max-h-screen overflow-y-auto"
         >
           <div class="flex items-center justify-between mb-6">
             <h3 class="text-lg">
@@ -14,6 +14,7 @@
             </h3>
             <IconClose @click="openModal = false" />
           </div>
+          <slot name="description" />
           <slot name="form" />
         </div>
       </div>

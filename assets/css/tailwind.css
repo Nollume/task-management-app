@@ -4,14 +4,29 @@
 @tailwind utilities;
 
 @layer base {
+  
+
+  ::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-900/40 dark:bg-neutral-200/20;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-indigo-500 rounded-lg;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-indigo-400;
+  }
   body {
-    @apply bg-slate-300 dark:bg-gray-900 text-gray-900 dark:text-neutral-200;
+    @apply bg-slate-200 dark:bg-gray-800 text-gray-900 dark:text-neutral-200;
     font-family: "Fredoka", sans-serif;
   }
 }
 
 @layer components {
-  .headline-container:hover h1,
+  .headline-container:hover h2,
   .headline-container:hover .arrow {
     @apply text-indigo-400;
   }
