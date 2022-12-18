@@ -1,5 +1,6 @@
 <template>
-  <div class="flex gap-2 items-center justify-end ">
+  <div class="flex gap-2 items-center justify-end">
+    <slot />
     <div
       class="bg-indigo-500 hover:bg-indigo-400 p-1.5 rounded-md cursor-pointer"
     >

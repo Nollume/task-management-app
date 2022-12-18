@@ -1,6 +1,6 @@
 <template>
   <main
-    class="flex-1 flex items-start justify-start bg-slate-300 dark:bg-gray-900 2xl:shadow-2xl 2xl:shadow-indigo-500 z-20"
+    class="flex-1 flex items-start justify-start bg-slate-300 dark:bg-gray-900 2xl:shadow-2xl 2xl:shadow-indigo-500 z-20 "
   >
     <CreateNewBoard
       class="m-4 w-full h-full text-2xl whitespace-nowrap rounded-xl bg-slate-200/40 dark:bg-gray-800/40"
