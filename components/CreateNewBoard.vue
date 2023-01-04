@@ -1,10 +1,10 @@
 <template>
-  <button
+  <a
     @click="newBoardOpenModal"
-    class="whitespace-nowrap text-indigo-500 hover:text-indigo-400"
+    class="whitespace-nowrap flex items-center justify-center text-indigo-500 hover:text-indigo-400 cursor-pointer"
   >
     + Create new board
-  </button>
+  </a>
 </template>
 
 <script setup lang="ts">

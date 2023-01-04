@@ -4,8 +4,6 @@
 @tailwind utilities;
 
 @layer base {
-  
-
   ::-webkit-scrollbar {
     width: 0.5rem;
     height: 0.5rem;
@@ -22,6 +20,12 @@
   body {
     @apply bg-slate-200 dark:bg-gray-800 text-gray-900 dark:text-neutral-200;
     font-family: "Fredoka", sans-serif;
+  }
+}
+
+@layer utilities {
+  .vertical-text {
+    writing-mode: vertical-rl;
   }
 }
 

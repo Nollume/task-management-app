@@ -1,16 +1,18 @@
 <template>
   <main
-    class="flex-1 flex items-start justify-start bg-slate-300 dark:bg-gray-900 2xl:shadow-2xl 2xl:shadow-indigo-500 z-20 "
+    class="flex-1 flex relative items-start justify-start bg-slate-300 dark:bg-gray-900 z-20"
   >
     <CreateNewBoard
-      class="m-4 w-full h-full text-2xl whitespace-nowrap rounded-xl bg-slate-200/40 dark:bg-gray-800/40"
+      class="absolute inset-4 text-2xl whitespace-nowrap rounded-xl bg-slate-200/40 dark:bg-gray-800/40"
       v-if="boards.length"
     />
     <div
       v-else
       class="h-full w-full flex gap-4 overflow-x-scroll p-4 scroll-pl-4 snap-mandatory snap-x md:px-6 md:gap-6 md:scroll-pl-6"
     >
-      <section class="min-w-[75%] snap-start md:min-w-[60%] lg:min-w-[40%]">
+      <section
+        class="min-w-[75%] snap-start md:min-w-[60%] lg:min-w-[40%] xl:min-w-[30%] 2xl:min-w-[20%]"
+      >
         <div class="whitespace-nowrap flex items-center gap-2 pb-4">
           <div class="w-4 h-4 rounded-full bg-indigo-500"></div>
           <h4>TODO (4)</h4>
@@ -37,7 +39,9 @@
           </li>
         </ul>
       </section>
-      <section class="min-w-[75%] snap-start md:min-w-[60%] lg:min-w-[40%]">
+      <section
+        class="min-w-[75%] snap-start md:min-w-[60%] lg:min-w-[40%] xl:min-w-[30%] 2xl:min-w-[20%]"
+      >
         <div class="whitespace-nowrap flex items-center gap-2 pb-4">
           <div
             class="w-4 h-4 rounded-full bg-gradient-to-r from-indigo-500 to-amber-400"
@@ -55,7 +59,9 @@
           </li>
         </ul>
       </section>
-      <section class="min-w-[75%] snap-start md:min-w-[60%] lg:min-w-[40%]">
+      <section
+        class="min-w-[75%] snap-start md:min-w-[60%] lg:min-w-[40%] xl:min-w-[30%] 2xl:min-w-[20%]"
+      >
         <div class="whitespace-nowrap flex items-center gap-2 pb-4">
           <div class="w-4 h-4 rounded-full bg-amber-400"></div>
           <h4>DONE (2)</h4>

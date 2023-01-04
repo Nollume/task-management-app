@@ -60,30 +60,26 @@
               id="subtask"
               placeholder="Add subtask"
             />
-
-            <ul class="grid gap-2 mt-1">
-              <li class="flex items-center gap-2">
-                <p
-                  class="flex-1 border px-2 py-1 border-gray-900/10 dark:border-neutral-200/10 bg-gradient-to-r from-indigo-500 to-amber-400 bg-clip-text text-transparent"
-                >
-                  asdfasdfasdf
-                </p>
-                <IconClose />
-              </li>
-              <li class="flex items-center gap-2">
-                <p
-                  class="flex-1 border px-2 py-1 border-gray-900/10 dark:border-neutral-200/10 bg-gradient-to-r from-indigo-500 to-amber-400 bg-clip-text text-transparent"
-                >
-                  hey adf
-                </p>
-                <IconClose />
-              </li>
-            </ul>
             <a
               class="text-indigo-500 cursor-pointer w-full text-center hover:text-indigo-400 py-2"
             >
               + Add New Subtask
             </a>
+
+            <ul class="grid gap-2 mt-1">
+              <li class="flex items-center gap-2">
+                <p class="flex-1 px-2 py-1 bg-slate-300 dark:bg-gray-900">
+                  asdfasdfasdf
+                </p>
+                <IconClose />
+              </li>
+              <li class="flex items-center gap-2">
+                <p class="flex-1 px-2 py-1 bg-slate-300 dark:bg-gray-900">
+                  hey adf
+                </p>
+                <IconClose />
+              </li>
+            </ul>
           </div>
           <div class="flex flex-col gap-1">
             <div><label class="cursor-pointer" for="status">Status</label></div>
