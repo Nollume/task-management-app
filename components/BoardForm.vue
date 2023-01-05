@@ -23,7 +23,7 @@
 <script setup lang="ts">
 import { useBoardStore } from "@/stores/board";
 const store = useBoardStore();
-const boardTitle = ref("");
+const boardTitle = ref<string>("");
 </script>
 
 <style scoped></style>

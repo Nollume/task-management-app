@@ -1,8 +1,17 @@
 <template>
-  <form class="grid gap-4">
+  <form
+    @submit.prevent="store.createTask(title, description, status, subtasks)"
+    class="grid gap-4"
+  >
     <div class="flex flex-col gap-1">
       <div><label class="cursor-pointer" for="title">Title</label></div>
-      <input class="input" type="text" id="title" placeholder="Task Title" />
+      <input
+        class="input"
+        type="text"
+        id="title"
+        placeholder="Task Title"
+        v-model="title"
+      />
     </div>
     <div class="flex flex-col gap-1">
       <div>
@@ -13,29 +22,37 @@
         name="description"
         id="description"
         placeholder="Task Description"
+        v-model="description"
       ></textarea>
     </div>
     <div class="flex flex-col gap-1">
       <div>
         <label class="cursor-pointer" for="subtask">Subtasks</label>
       </div>
-      <input class="input" type="text" id="subtask" placeholder="Add subtask" />
+      <input
+        class="input"
+        type="text"
+        id="subtask"
+        placeholder="Add subtask"
+        v-model="subtask"
+      />
       <a
+        @click.prevent="addSubtask"
         class="text-indigo-500 cursor-pointer w-full text-center hover:text-indigo-400 py-2"
       >
         + Add New Subtask
       </a>
 
-      <ul class="grid gap-2 mt-1">
-        <li class="flex items-center gap-2">
+      <ul v-show="subtasks.size" class="grid gap-2 mt-1">
+        <li
+          v-for="task in subtasks"
+          :key="task"
+          class="flex items-center gap-2"
+        >
           <p class="flex-1 px-2 py-1 bg-slate-300 dark:bg-gray-900">
-            asdfasdfasdf
+            {{ task }}
           </p>
-          <IconClose />
-        </li>
-        <li class="flex items-center gap-2">
-          <p class="flex-1 px-2 py-1 bg-slate-300 dark:bg-gray-900">hey adf</p>
-          <IconClose />
+          <IconClose @click.prevent="removeSubtask(task)" />
         </li>
       </ul>
     </div>
@@ -54,15 +71,15 @@
           class="cursor-pointer px-2 relative py-1 w-full appearance-none bg-transparent outline-none border border-gray-900/10 dark:border-neutral-200/10 z-20"
           name="status"
           id="status"
+          v-model="status"
         >
-          <option class="bg-slate-200 dark:bg-gray-800" value="todo">
-            Todo
-          </option>
-          <option class="bg-slate-200 dark:bg-gray-800" value="doing">
-            Doing
-          </option>
-          <option class="bg-slate-200 dark:bg-gray-800" value="done">
-            Done
+          <option
+            v-for="status in store?.currentBoard?.columns"
+            :key="status.statusTitle"
+            class="bg-slate-200 dark:bg-gray-800"
+            :value="status.statusTitle"
+          >
+            {{ status.statusTitle }}
           </option>
         </select>
       </div>
@@ -75,6 +92,24 @@
   </form>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useBoardStore } from "@/stores/board";
+const store = useBoardStore();
+const title = ref<string>("");
+const description = ref<string>("");
+const status = ref<string>("todo");
+const subtask = ref<string>("");
+const subtasks = ref(new Set<string>());
+
+const addSubtask = () => {
+  if (!subtask.value) return;
+  subtasks.value.add(subtask.value);
+
+  subtask.value = "";
+};
+const removeSubtask = (task: string) => {
+  subtasks.value.delete(task);
+};
+</script>
 
 <style scoped></style>

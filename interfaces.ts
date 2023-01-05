@@ -21,6 +21,6 @@ export interface task {
 }
 
 interface statuses {
-  statusTitle: string,
-  badge: string,
+  statusTitle: string;
+  badge: string;
 }

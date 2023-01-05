@@ -59,7 +59,7 @@
       <li
         v-for="board in boards"
         :key="board.boardId"
-        @click="store.getCurrentBoardId(board.boardId)"
+        @click="store.setCurrentBoardId(board.boardId)"
         class="cursor-pointer hover:text-indigo-400 capitalize pt-1.5"
         :class="{ 'text-indigo-500': currentBoardId === board.boardId }"
       >
@@ -70,7 +70,7 @@
     </ul>
 
     <setColorTheme
-      class="mt-auto sm:w-52 sm:self-center lg:w-auto"
+      class=" sm:w-52 sm:self-center lg:w-auto lg:mt-auto"
       :class="{
         'lg:vertical-text lg:rotate-180 lg:py-4 lg:px-2': !openTasksBar,
       }"

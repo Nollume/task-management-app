@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { StatusModals, board } from "~/interfaces";
+import { StatusModals, board, task } from "~/interfaces";
 
 export const useBoardStore = defineStore("board", {
   state: () => ({
@@ -33,21 +33,21 @@ export const useBoardStore = defineStore("board", {
       this.boards = this.getStorageBoard();
       this.currentBoardId = +localStorage.getItem("currentBoardId")!;
     },
-    getUniqueId() {
+    getUniqueBoardId() {
       let id: number;
       if (!this.getStorageBoard()) id = 1;
       else id = Math.max(...this.getStorageBoard().map((b) => b.boardId)) + 1;
       return id;
     },
-    getCurrentBoardId(id: number) {
+    setCurrentBoardId(id: number) {
       this.currentBoardId = id;
       localStorage.setItem("currentBoardId", "" + id);
     },
     createBoard(boardTitle: string) {
       if (!boardTitle) return;
-      const id = this.getUniqueId();
-      const board = {
-        boardTitle: boardTitle,
+      const id = this.getUniqueBoardId();
+      const board: board = {
+        boardTitle,
         boardId: id,
         columns: [
           { statusTitle: "todo", badge: "bg-indigo-500" },
@@ -73,7 +73,40 @@ export const useBoardStore = defineStore("board", {
 
       this.saveToLocalStorage(this.boards);
       this.openModal = false;
-      this.getCurrentBoardId(id);
+      this.setCurrentBoardId(id);
+    },
+    /**
+     * TASKS
+     */
+    getUniqueTaskId() {
+      let id: number;
+      if (!this.currentBoard?.tasks.length) id = 1;
+      else id = Math.max(...this.currentBoard?.tasks.map((b) => b.taskId)) + 1;
+      return id;
+    },
+    createTask(
+      taskTitle: string,
+      taskDescription: string,
+      status: string,
+      subtasks: Set<string>
+    ) {
+      if (!taskTitle || !taskDescription) return;
+      const subTasksArr: string[] = [...subtasks];
+      const task: task = {
+        taskTitle,
+        taskId: this.getUniqueTaskId(),
+        taskDescription,
+        subtasks: subTasksArr,
+        status,
+      };
+      const currentBoard = this.boards.find(
+        (b) => b.boardId === this.currentBoardId
+      );
+      currentBoard?.tasks.push(task);
+
+      this.saveToLocalStorage(this.boards);
+
+      this.openModal = false;
     },
   },
 });
