@@ -9,7 +9,7 @@ export interface board {
   boardTitle: string;
   boardId: number;
   columns: statuses[];
-  tasks?: task[];
+  tasks: task[];
 }
 
 export interface task {

@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen relative mx-auto lg:flex">
+  <div class="h-screen relative mx-auto overflow-hidden lg:flex">
     <Menu />
 
     <div class="h-full w-full flex flex-col flex-1 transition-all duration-500">

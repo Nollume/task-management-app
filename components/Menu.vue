@@ -1,7 +1,7 @@
 <template>
   <div
-    class="flex flex-col gap-4 absolute top-16 left-2 right-2 p-4 rounded-lg rounded-tl-none duration-300 bg-slate-200 dark:bg-gray-800 z-30 shadow-lg overflow-y-auto overflow-x-hidden sm:max-w-lg lg:static lg:mt-14 lg:border-t-4 lg:border-slate-300 lg:dark:border-gray-900 lg:rounded-none lg:shadow-none"
-    :class="openTasksBar ? 'w-60 lg:flex' : 'hidden lg:flex lg:w-20'"
+    class="flex flex-col gap-4 absolute top-16 left-2 right-2 bottom-2 p-4 rounded-lg rounded-tl-none duration-300 bg-slate-200 dark:bg-gray-800 z-30 overflow-y-auto overflow-x-hidden sm:max-w-[15rem] lg:static lg:mt-14 lg:border-t-4 lg:border-slate-300 lg:dark:border-gray-900 lg:rounded-none"
+    :class="openTasksBar ? 'lg:w-60 lg:flex' : 'hidden lg:flex lg:w-20'"
   >
     <div
       class="hidden select-none items-center uppercase absolute top-3 left-8 text-2xl lg:flex"
@@ -19,6 +19,7 @@
       >
     </div>
     <div
+      v-if="boards.length"
       class="flex gap-2 items-center justify-end pb-4 border-b border-gray-900/10 dark:border-neutral-200/10"
       :class="{ 'lg:flex-col': !store.openTasksBar }"
     >
@@ -45,25 +46,34 @@
 
     <CreateNewBoard :class="{ 'vertical-text rotate-180': !openTasksBar }" />
     <p v-show="openTasksBar" class="uppercase text-xs text-center">
-      All boards ({{ boards.length }})
+      <span v-if="!boards.length">No boards</span>
+      <span v-else-if="boards.length === 1">Board ({{ boards.length }})</span>
+      <span v-else-if="boards.length > 1"
+        >All boards ({{ boards.length }})</span
+      >
     </p>
     <ul
       v-show="openTasksBar"
       class="flex flex-col gap-2 divide-y divide-gray-900/10 dark:divide-neutral-200/10"
     >
-      <li class="cursor-pointer hover:text-indigo-400 capitalize pt-1.5">
-        <p>Build UI</p>
-      </li>
-      <li class="cursor-pointer hover:text-indigo-400 capitalize pt-1.5">
-        unit testing
-      </li>
-      <li class="cursor-pointer hover:text-indigo-400 capitalize pt-1.5">
-        tvarohový koláč
+      <li
+        v-for="board in boards"
+        :key="board.boardId"
+        @click="store.getCurrentBoardId(board.boardId)"
+        class="cursor-pointer hover:text-indigo-400 capitalize pt-1.5"
+        :class="{ 'text-indigo-500': currentBoardId === board.boardId }"
+      >
+        <p :title="board.boardTitle">
+          {{ store.validateStr(board.boardTitle, 15) }}
+        </p>
       </li>
     </ul>
+
     <setColorTheme
-      class="sm:w-52 sm:self-center lg:w-auto lg:mt-auto"
-      :class="{ 'lg:vertical-text lg:rotate-180 lg:py-4 lg:px-2': !openTasksBar }"
+      class="mt-auto sm:w-52 sm:self-center lg:w-auto"
+      :class="{
+        'lg:vertical-text lg:rotate-180 lg:py-4 lg:px-2': !openTasksBar,
+      }"
     />
   </div>
 </template>
@@ -72,5 +82,5 @@
 import { storeToRefs } from "pinia";
 import { useBoardStore } from "~/stores/board";
 const store = useBoardStore();
-const { openTasksBar, boards } = storeToRefs(store);
+const { openTasksBar, boards, currentBoardId } = storeToRefs(store);
 </script>

@@ -20,13 +20,22 @@
           d="M8.388,10.049l4.76-4.873c0.303-0.31,0.297-0.804-0.012-1.105c-0.309-0.304-0.803-0.293-1.105,0.012L6.726,9.516c-0.303,0.31-0.296,0.805,0.012,1.105l5.433,5.307c0.152,0.148,0.35,0.223,0.547,0.223c0.203,0,0.406-0.08,0.559-0.236c0.303-0.309,0.295-0.803-0.012-1.104L8.388,10.049z"
         ></path>
       </svg>
-      <h2 class="capitalize text-lg cursor-pointer">
-        Platform launch
-        <!-- {{ `${"Platform launch".substring(8, 0)}` }} -->
-        <!-- <span v-show="'Platform launch'.length > 8">...</span> -->
-      </h2>
+      <template v-if="currentBoardId">
+        <h2
+          class="capitalize text-lg cursor-pointer sm:hidden"
+          :title="currentBoard?.boardTitle"
+        >
+          {{ store.validateStr(currentBoard?.boardTitle!) }}
+        </h2>
+        <h2
+          class="capitalize text-lg cursor-pointer hidden sm:block"
+          :title="currentBoard?.boardTitle"
+        >
+          {{ store.validateStr(currentBoard?.boardTitle!, 30) }}
+        </h2>
+      </template>
     </div>
-    <AddTask />
+    <AddTask v-if="currentBoardId" />
   </header>
 </template>
 
@@ -34,7 +43,7 @@
 import { storeToRefs } from "pinia";
 import { useBoardStore } from "~/stores/board";
 const store = useBoardStore();
-const { openTasksBar } = storeToRefs(store);
+const { openTasksBar, currentBoardId, currentBoard } = storeToRefs(store);
 </script>
 
 <style scoped></style>
