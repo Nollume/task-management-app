@@ -4,7 +4,7 @@
   >
     <CreateNewBoard
       class="absolute inset-4 text-2xl whitespace-nowrap rounded-xl bg-slate-200/40 dark:bg-gray-800/40"
-      v-if="boards.length"
+      v-if="!boards.length"
     />
     <div
       v-else

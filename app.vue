@@ -6,7 +6,6 @@
       <TheHeader />
       <MainContent />
       <ManageModal />
-      
     </div>
   </div>
 </template>
@@ -15,13 +14,16 @@
 import { useBoardStore } from "~/stores/board";
 const store = useBoardStore();
 useHead({
-  title: "Task management",
+  title: "Task management app",
   meta: [
     {
       name: "description",
       content: "Task management app.",
     },
   ],
+});
+onMounted(() => {
+  store.getBoards();
 });
 </script>
 

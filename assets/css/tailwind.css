@@ -37,4 +37,10 @@
   .input {
     @apply w-full px-2 py-1 placeholder:text-gray-900/40 dark:placeholder:text-neutral-200/20 bg-slate-200 dark:bg-gray-800 outline-none border border-gray-900/10 dark:border-neutral-200/10;
   }
+  .radioInput {
+    @apply appearance-none relative w-4 h-4 border border-gray-900 rounded-full cursor-pointer grid place-items-center after:absolute checked:after:block;
+  }
+  .radioInput::after {
+    @apply w-2 h-2 bg-gray-900 rounded-full hidden;
+  }
 }

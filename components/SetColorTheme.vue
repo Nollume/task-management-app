@@ -1,7 +1,9 @@
 <template>
   <a
-    class="flex mt-4 gap-2 items-center justify-between px-4 py-1 whitespace-nowrap text-gray-900 bg-gradient-to-r from-indigo-500 to-amber-400 rounded-full hover:from-indigo-400 hover:to-amber-300"
-    @click.prevent="setColorTheme($colorMode.preference === 'dark' ? 'light' : 'dark')"
+    class="flex mt-4 gap-2 items-center justify-between px-4 py-1 whitespace-nowrap text-gray-900 bg-gradient-to-r from-indigo-500 to-amber-400 rounded-full hover:from-indigo-400 hover:to-amber-300 cursor-pointer"
+    @click.prevent="
+      setColorTheme($colorMode.preference === 'dark' ? 'light' : 'dark')
+    "
   >
     <!-- v-if="$colorMode.value === 'light'" -->
     <svg class="fill-current w-5 h-5" viewBox="0 0 20 20">
