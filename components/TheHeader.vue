@@ -25,13 +25,13 @@
           class="capitalize text-lg cursor-pointer sm:hidden"
           :title="currentBoard?.boardTitle"
         >
-          {{ store.validateStr(currentBoard?.boardTitle!) }}
+          {{ validateStr(currentBoard?.boardTitle!) }}
         </h2>
         <h2
           class="capitalize text-lg cursor-pointer hidden sm:block"
           :title="currentBoard?.boardTitle"
         >
-          {{ store.validateStr(currentBoard?.boardTitle!, 30) }}
+          {{ validateStr(currentBoard?.boardTitle!, 30) }}
         </h2>
       </template>
     </div>
@@ -40,6 +40,7 @@
 </template>
 
 <script setup lang="ts">
+import { validateStr } from "@/helpers/helper";
 import { storeToRefs } from "pinia";
 import { useBoardStore } from "~/stores/board";
 const store = useBoardStore();

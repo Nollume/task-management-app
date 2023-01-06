@@ -60,17 +60,18 @@
         v-for="board in boards"
         :key="board.boardId"
         @click="store.setCurrentBoardId(board.boardId)"
-        class="cursor-pointer hover:text-indigo-400 capitalize pt-1.5"
+        class="flex gap-2 cursor-pointer hover:text-indigo-400 capitalize pt-1.5"
         :class="{ 'text-indigo-500': currentBoardId === board.boardId }"
       >
+        <IconBoard />
         <p :title="board.boardTitle">
-          {{ store.validateStr(board.boardTitle, 15) }}
+          {{ validateStr(board.boardTitle, 12) }}
         </p>
       </li>
     </ul>
 
     <setColorTheme
-      class=" sm:w-52 sm:self-center lg:w-auto lg:mt-auto"
+      class="sm:w-52 sm:self-center lg:w-auto lg:mt-auto"
       :class="{
         'lg:vertical-text lg:rotate-180 lg:py-4 lg:px-2': !openTasksBar,
       }"
@@ -79,6 +80,7 @@
 </template>
 
 <script setup lang="ts">
+import { validateStr } from "@/helpers/helper";
 import { storeToRefs } from "pinia";
 import { useBoardStore } from "~/stores/board";
 const store = useBoardStore();

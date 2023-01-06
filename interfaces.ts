@@ -16,11 +16,15 @@ export interface task {
   taskTitle: string;
   taskId: number;
   taskDescription: string;
-  subtasks: string[];
+  subtasks: subtask[];
   status: string;
 }
 
 interface statuses {
   statusTitle: string;
   badge: string;
+}
+export interface subtask {
+  subtaskTitle: string;
+  done: boolean;
 }

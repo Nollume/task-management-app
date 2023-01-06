@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { StatusModals, board, task } from "~/interfaces";
+import { StatusModals, board, task, subtask } from "~/interfaces";
 
 export const useBoardStore = defineStore("board", {
   state: () => ({
@@ -15,11 +15,6 @@ export const useBoardStore = defineStore("board", {
     },
   },
   actions: {
-    validateStr(str: string, nmb: number = 8) {
-      let newStr = str.substring(0, nmb);
-      if (str.length > nmb) newStr = newStr + "...";
-      return newStr;
-    },
     saveToLocalStorage(board: board[]) {
       const boardString = JSON.stringify(board);
       localStorage.setItem("boards", boardString);
@@ -91,7 +86,13 @@ export const useBoardStore = defineStore("board", {
       subtasks: Set<string>
     ) {
       if (!taskTitle || !taskDescription) return;
-      const subTasksArr: string[] = [...subtasks];
+
+      let subTasksArr: subtask[] = [];
+
+      for (const i of subtasks) {
+        subTasksArr.push({ subtaskTitle: i, done: false });
+      }
+
       const task: task = {
         taskTitle,
         taskId: this.getUniqueTaskId(),
