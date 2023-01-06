@@ -20,16 +20,41 @@
       >
         <section
           class="min-w-[75%] snap-start md:min-w-[60%] lg:min-w-[40%] xl:min-w-[35%] 2xl:min-w-[30%]"
-          v-for="column in currentBoard.columns"
+          v-for="column, index in currentBoard.columns"
           :key="column.statusTitle"
         >
-          <div class="whitespace-nowrap flex items-center gap-2 pb-4">
-            <div class="w-4 h-4 rounded-full" :class="column.badge"></div>
+          <div
+            class="whitespace-nowrap flex items-center gap-2 pb-2 mb-2 mx-1 border-b border-gray-900/10 dark:border-neutral-200/10"
+          >
+            <div
+              class="w-4 h-4 rounded-full"
+              :class="column.badge ? column.badge : 'bg-amber-400'"
+            ></div>
             <h4 class="uppercase">
               {{ column.statusTitle }} ({{ tasksLength(column.statusTitle) }})
             </h4>
+            <div
+              v-if="
+                column.statusTitle !== 'done' &&
+                column.statusTitle !== 'todo' &&
+                column.statusTitle !== 'doing'
+              "
+              @click="
+                store.removeColumnOpenModal({
+                  statusTitle: column.statusTitle,
+                  index: index,
+                })
+              "
+              class="ml-auto bg-red-400 hover:bg-red-300 p-1.5 rounded-md cursor-pointer"
+            >
+              <IconRemove />
+            </div>
           </div>
-          <TransitionGroup tag="ul" name="fade" class="grid gap-2 md:gap-4">
+          <TransitionGroup
+            tag="ul"
+            name="fade"
+            class="grid gap-2 md:gap-4 relative"
+          >
             <template v-for="task in currentBoard.tasks" :key="task.taskId">
               <li
                 v-if="task.status === column.statusTitle"
@@ -53,14 +78,15 @@
                 >
                   0 of 1 subtask
                 </p>
-                <p v-else class="text-sm pt-2 opacity-75">0 subtasks</p>
+                <p v-else class="text-sm pt-2 opacity-75">No subtasks</p>
               </li>
             </template>
             <li
               v-if="tasksLength(column.statusTitle) === 0"
-              class="p-4 text-center"
+              class="p-4 absolute top-0 left-0"
             >
-              You don't have any {{ column.statusTitle }} tasks
+              You don't have any
+              <span class="uppercase">"{{ column.statusTitle }}"</span> tasks
             </li>
           </TransitionGroup>
         </section>
@@ -75,7 +101,9 @@ import { storeToRefs } from "pinia";
 import { StatusModals } from "~/interfaces";
 import { useBoardStore } from "~/stores/board";
 const store = useBoardStore();
+
 const { boards, currentBoard } = storeToRefs(store);
+
 const CardOpenModal = () => {
   store.openModal = true;
   store.modalStatus = StatusModals.CARD;
@@ -90,4 +118,14 @@ const tasksLength = (columnStatus: string) => {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.3s ease-in-out;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  scale: 0.8;
+}
+</style>

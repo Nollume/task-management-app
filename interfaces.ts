@@ -3,6 +3,7 @@ export enum StatusModals {
   BOARD = "BOARD",
   CARD = "CARD",
   COLUMN = "COLUMN",
+  REMOVECOLUMN = "REMOVECOLUMN",
 }
 
 export interface board {
@@ -20,11 +21,16 @@ export interface task {
   status: string;
 }
 
-interface statuses {
+export interface statuses {
   statusTitle: string;
   badge: string;
 }
 export interface subtask {
   subtaskTitle: string;
   done: boolean;
+}
+
+export interface column {
+  statusTitle: string;
+  index: number;
 }

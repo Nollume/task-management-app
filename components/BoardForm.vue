@@ -10,6 +10,7 @@
         id="board-title"
         placeholder="Board Title"
         v-model.trim="boardTitle"
+        required
       />
     </div>
     <button

@@ -11,6 +11,7 @@
         id="title"
         placeholder="Task Title"
         v-model="title"
+        required
       />
     </div>
     <div class="flex flex-col gap-1">
@@ -23,6 +24,7 @@
         id="description"
         placeholder="Task Description"
         v-model="description"
+        required
       ></textarea>
     </div>
     <div class="flex flex-col gap-1">

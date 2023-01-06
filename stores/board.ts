@@ -1,5 +1,12 @@
 import { defineStore } from "pinia";
-import { StatusModals, board, task, subtask } from "~/interfaces";
+import {
+  StatusModals,
+  board,
+  task,
+  subtask,
+  statuses,
+  column,
+} from "~/interfaces";
 
 export const useBoardStore = defineStore("board", {
   state: () => ({
@@ -8,6 +15,8 @@ export const useBoardStore = defineStore("board", {
     openModal: false as boolean,
     modalStatus: StatusModals.TASK as string,
     openTasksBar: false as boolean,
+    alertMsg: "" as string,
+    columnToDelete: {} as column,
   }),
   getters: {
     currentBoard: (state) => {
@@ -15,6 +24,12 @@ export const useBoardStore = defineStore("board", {
     },
   },
   actions: {
+    showAlertMsg(text: string) {
+      this.alertMsg = text;
+      setTimeout(() => {
+        this.alertMsg = "";
+      }, 5000);
+    },
     saveToLocalStorage(board: board[]) {
       const boardString = JSON.stringify(board);
       localStorage.setItem("boards", boardString);
@@ -40,6 +55,14 @@ export const useBoardStore = defineStore("board", {
     },
     createBoard(boardTitle: string) {
       if (!boardTitle) return;
+      if (
+        this.boards.some(
+          (item) => item.boardTitle.toLowerCase() === boardTitle.toLowerCase()
+        )
+      ) {
+        this.showAlertMsg("Board with this name already exists!");
+        return;
+      }
       const id = this.getUniqueBoardId();
       const board: board = {
         boardTitle,
@@ -86,6 +109,14 @@ export const useBoardStore = defineStore("board", {
       subtasks: Set<string>
     ) {
       if (!taskTitle || !taskDescription) return;
+      if (
+        this.currentBoard?.tasks.some(
+          (item) => item.taskTitle.toLowerCase() === taskTitle.toLowerCase()
+        )
+      ) {
+        this.showAlertMsg("Task with this name already exists!");
+        return;
+      }
 
       let subTasksArr: subtask[] = [];
 
@@ -100,14 +131,35 @@ export const useBoardStore = defineStore("board", {
         subtasks: subTasksArr,
         status,
       };
-      const currentBoard = this.boards.find(
-        (b) => b.boardId === this.currentBoardId
-      );
-      currentBoard?.tasks.push(task);
 
+      this.currentBoard?.tasks.push(task);
       this.saveToLocalStorage(this.boards);
-
       this.openModal = false;
+    },
+    /**
+     * Columns
+     */
+    createColumn(statusTitle: string, badge: string) {
+      if (
+        this.currentBoard?.columns.some(
+          (item) => item.statusTitle.toLowerCase() === statusTitle.toLowerCase()
+        )
+      ) {
+        this.showAlertMsg("Column with this name already exists!");
+        return;
+      }
+      const column: statuses = {
+        statusTitle,
+        badge,
+      };
+      this.currentBoard?.columns.push(column);
+      this.saveToLocalStorage(this.boards);
+      this.openModal = false;
+    },
+    removeColumnOpenModal(colInfo: column) {
+      this.openModal = true;
+      this.modalStatus = StatusModals.REMOVECOLUMN;
+      this.columnToDelete = colInfo;
     },
   },
 });

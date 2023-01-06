@@ -13,8 +13,19 @@
       <template v-else-if="store.modalStatus === StatusModals.COLUMN" #title
         >Add New Column</template
       >
+      <template
+        v-else-if="store.modalStatus === StatusModals.REMOVECOLUMN"
+        #title
+        >Remove Column</template
+      >
       <template v-if="store.modalStatus === StatusModals.CARD" #description>
         <CardDescription />
+      </template>
+      <template
+        v-if="store.modalStatus === StatusModals.REMOVECOLUMN"
+        #description
+      >
+        <ColumnRemoveColumn />
       </template>
 
       <template v-if="store.modalStatus === StatusModals.TASK" #form>
