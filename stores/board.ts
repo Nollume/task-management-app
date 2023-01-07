@@ -22,6 +22,11 @@ export const useBoardStore = defineStore("board", {
     currentBoard: (state) => {
       return state.boards.find((b) => b.boardId === state.currentBoardId);
     },
+    currentBoardIndex: (state): number => {
+      return state.boards.findIndex(
+        (board) => board.boardId === state.currentBoardId
+      );
+    },
   },
   actions: {
     showAlertMsg(text: string) {
@@ -92,6 +97,10 @@ export const useBoardStore = defineStore("board", {
       this.saveToLocalStorage(this.boards);
       this.openModal = false;
       this.setCurrentBoardId(id);
+    },
+    removeBoardOpenModal() {
+      this.openModal = true;
+      this.modalStatus = StatusModals.REMOVEBOARD;
     },
     /**
      * TASKS

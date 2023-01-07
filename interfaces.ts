@@ -4,6 +4,7 @@ export enum StatusModals {
   CARD = "CARD",
   COLUMN = "COLUMN",
   REMOVECOLUMN = "REMOVECOLUMN",
+  REMOVEBOARD = "REMOVEBOARD",
 }
 
 export interface board {

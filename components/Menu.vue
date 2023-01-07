@@ -38,12 +38,15 @@
       >
         <IconEdit />
       </div>
-      <div class="bg-red-400 hover:bg-red-300 p-1.5 rounded-md cursor-pointer">
+      <div
+        @click="store.removeBoardOpenModal"
+        class="bg-red-400 hover:bg-red-300 p-1.5 rounded-md cursor-pointer"
+      >
         <IconRemove />
       </div>
     </div>
 
-    <CreateNewBoard :class="{ 'vertical-text rotate-180': !openTasksBar }" />
+    <BoardCreate :class="{ 'vertical-text rotate-180': !openTasksBar }" />
     <p v-show="openTasksBar" class="uppercase text-xs text-center">
       <span v-if="!boards.length">No boards</span>
       <span v-else-if="boards.length === 1">Board ({{ boards.length }})</span>

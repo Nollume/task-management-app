@@ -18,6 +18,11 @@
         #title
         >Remove Column</template
       >
+      <template
+        v-else-if="store.modalStatus === StatusModals.REMOVEBOARD"
+        #title
+        >Remove Board</template
+      >
       <template v-if="store.modalStatus === StatusModals.CARD" #description>
         <CardDescription />
       </template>
@@ -25,7 +30,13 @@
         v-if="store.modalStatus === StatusModals.REMOVECOLUMN"
         #description
       >
-        <ColumnRemoveColumn />
+        <ColumnRemove />
+      </template>
+      <template
+        v-if="store.modalStatus === StatusModals.REMOVEBOARD"
+        #description
+      >
+        <BoardRemove />
       </template>
 
       <template v-if="store.modalStatus === StatusModals.TASK" #form>

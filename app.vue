@@ -13,7 +13,6 @@
 
 <script setup lang="ts">
 import { useBoardStore } from "~/stores/board";
-import type { InjectionKey } from "vue";
 const store = useBoardStore();
 
 useHead({
