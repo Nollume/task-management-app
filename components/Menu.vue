@@ -34,12 +34,13 @@
         {{ validateStr(currentBoard?.boardTitle!, 6) }}
       </h2>
       <div
+        @click="editBoardOpenModal"
         class="bg-indigo-500 hover:bg-indigo-400 p-1.5 rounded-md cursor-pointer"
       >
         <IconEdit />
       </div>
       <div
-        @click="store.removeBoardOpenModal"
+        @click="removeBoardOpenModal"
         class="bg-red-400 hover:bg-red-300 p-1.5 rounded-md cursor-pointer"
       >
         <IconRemove />
@@ -83,9 +84,20 @@
 
 <script setup lang="ts">
 import { validateStr } from "@/helpers/helper";
+import { StatusModals } from "~/interfaces";
 import { storeToRefs } from "pinia";
 import { useBoardStore } from "~/stores/board";
 const store = useBoardStore();
 const { openTasksBar, boards, currentBoardId, currentBoard } =
   storeToRefs(store);
+
+const removeBoardOpenModal = () => {
+  store.openModal = true;
+  store.modalStatus = StatusModals.REMOVEBOARD;
+};
+
+const editBoardOpenModal = () => {
+  store.openModal = true;
+  store.modalStatus = StatusModals.EDITBOARD;
+};
 </script>

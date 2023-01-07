@@ -54,16 +54,13 @@ const removeColumn = (index: number, title: string) => {
 
   //**If the column has tasks remove them. */
   if (someTasks.value) {
-    let tasks = store.currentBoard?.tasks!;
-
-    tasks = tasks.filter((t) => t.status !== title);
-
-    store.currentBoard?.tasks.splice(0, store.currentBoard?.tasks.length);
-    tasks.forEach((task) => store.currentBoard?.tasks.push(task));
+    let tasks = store.currentBoard!.tasks;
+    store.currentBoard!.tasks = tasks.filter((t) => t.status !== title);
   }
   //**Save to localStorage */
   store.saveToLocalStorage(store.boards);
-  store.openModal = false;
+
+  store.showAlertMsg(`Column "${title}" deleted!`, "succeed");
 };
 </script>
 

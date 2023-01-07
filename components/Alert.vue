@@ -1,10 +1,13 @@
 <template>
   <Transition name="fadeIn">
     <div
-      v-show="store.alertMsg.length"
-      class="text-neutral-200 flex items-center gap-2 px-4 max-w-[15rem] py-2 bg-amber-600 absolute z-[999] rounded-md bottom-4 right-4"
+      v-show="store.alert"
+      class="text-neutral-200 flex items-center gap-2 px-4 max-w-[18rem] py-2 absolute z-[999] rounded-md bottom-4 right-4"
+      :class="store.alertColor === 'warn' ? 'bg-amber-600' : 'bg-green-600'"
     >
-      <IconAlert />
+      <IconAlert v-if="store.alertColor === 'warn'" />
+      <IconSucceed v-else />
+
       <p class="leading-4">{{ store.alertMsg }}</p>
     </div>
   </Transition>

@@ -25,7 +25,25 @@
 <script setup lang="ts">
 import { useBoardStore } from "@/stores/board";
 import { storeToRefs } from "pinia";
-const { openModal } = storeToRefs(useBoardStore());
+const store = useBoardStore();
+const { openModal } = storeToRefs(store);
+
+/**
+ * 
+ * close on ESC
+ */
+
+const closeModalOnEsc = (e: KeyboardEvent) => {
+  if (e.code === "Escape" && openModal.value) {
+    openModal.value = false;
+  }
+};
+onMounted(() => {
+  document.addEventListener("keyup", closeModalOnEsc);
+});
+onUnmounted(() => {
+  document.removeEventListener("keyup", closeModalOnEsc);
+});
 </script>
 
 <style>

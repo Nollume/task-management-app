@@ -5,6 +5,7 @@ export enum StatusModals {
   COLUMN = "COLUMN",
   REMOVECOLUMN = "REMOVECOLUMN",
   REMOVEBOARD = "REMOVEBOARD",
+  EDITBOARD = "EDITBOARD",
 }
 
 export interface board {

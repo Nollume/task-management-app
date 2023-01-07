@@ -12,10 +12,15 @@ export const useBoardStore = defineStore("board", {
   state: () => ({
     boards: [] as board[],
     currentBoardId: null as number | null,
+
     openModal: false as boolean,
     modalStatus: StatusModals.TASK as string,
     openTasksBar: false as boolean,
+
     alertMsg: "" as string,
+    alert: false as boolean,
+    alertColor: "" as string,
+
     columnToDelete: {} as column,
   }),
   getters: {
@@ -29,15 +34,21 @@ export const useBoardStore = defineStore("board", {
     },
   },
   actions: {
-    showAlertMsg(text: string) {
-      this.alertMsg = text;
-      setTimeout(() => {
-        this.alertMsg = "";
-      }, 5000);
+    showAlertMsg(text: string, alertColor: string = "warn") {
+      if (!this.alert) {
+        this.alert = true;
+        this.alertMsg = text;
+        this.alertColor = alertColor;
+
+        setTimeout(() => {
+          this.alert = false;
+        }, 5000);
+      }
     },
     saveToLocalStorage(board: board[]) {
       const boardString = JSON.stringify(board);
       localStorage.setItem("boards", boardString);
+      this.openModal = false;
     },
     getStorageBoard() {
       const getBoard: board[] = JSON.parse(localStorage.getItem("boards")!);
@@ -95,13 +106,13 @@ export const useBoardStore = defineStore("board", {
       }
 
       this.saveToLocalStorage(this.boards);
-      this.openModal = false;
+      
       this.setCurrentBoardId(id);
+
+      this.alert = false;
+      this.showAlertMsg(`Board "${boardTitle}" created!`, "succeed");
     },
-    removeBoardOpenModal() {
-      this.openModal = true;
-      this.modalStatus = StatusModals.REMOVEBOARD;
-    },
+
     /**
      * TASKS
      */
@@ -143,7 +154,10 @@ export const useBoardStore = defineStore("board", {
 
       this.currentBoard?.tasks.push(task);
       this.saveToLocalStorage(this.boards);
-      this.openModal = false;
+      
+
+      this.alert = false;
+      this.showAlertMsg(`Task "${taskTitle}" created!`, "succeed");
     },
     /**
      * Columns
@@ -163,7 +177,10 @@ export const useBoardStore = defineStore("board", {
       };
       this.currentBoard?.columns.push(column);
       this.saveToLocalStorage(this.boards);
-      this.openModal = false;
+      
+
+      this.alert = false;
+      this.showAlertMsg(`Column "${statusTitle}" created!`, "succeed");
     },
     removeColumnOpenModal(colInfo: column) {
       this.openModal = true;

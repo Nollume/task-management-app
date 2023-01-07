@@ -40,6 +40,7 @@ const taskLength = computed(() => {
 });
 
 const deleteBoard = () => {
+  const boardTitle = store.currentBoard?.boardTitle;
   store.boards.splice(store.currentBoardIndex, 1);
 
   if (store.boards.length) {
@@ -52,7 +53,7 @@ const deleteBoard = () => {
     localStorage.removeItem("boards");
   }
 
-  store.openModal = false;
+  store.showAlertMsg(`Board "${boardTitle}" deleted!`, "succeed");
 };
 </script>
 

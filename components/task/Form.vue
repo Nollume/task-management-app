@@ -45,7 +45,12 @@
         + Add New Subtask
       </a>
 
-      <ul v-show="subtasks.size" class="grid gap-2 mt-1">
+      <TransitionGroup
+        tag="ul"
+        name="fade"
+        v-show="subtasks.size"
+        class="grid gap-2 mt-1"
+      >
         <li
           v-for="task in subtasks"
           :key="task"
@@ -56,7 +61,7 @@
           </p>
           <IconClose @click.prevent="removeSubtask(task)" />
         </li>
-      </ul>
+      </TransitionGroup>
     </div>
     <div class="flex flex-col gap-1">
       <div><label class="cursor-pointer" for="status">Status</label></div>
@@ -114,4 +119,14 @@ const removeSubtask = (task: string) => {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.3s ease-in-out;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  scale: 0.8;
+}
+</style>

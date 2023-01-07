@@ -23,6 +23,9 @@
         #title
         >Remove Board</template
       >
+      <template v-else-if="store.modalStatus === StatusModals.EDITBOARD" #title
+        >Edit Board Title</template
+      >
       <template v-if="store.modalStatus === StatusModals.CARD" #description>
         <CardDescription />
       </template>
@@ -49,6 +52,9 @@
         <CardInfo /> </template
       ><template v-else-if="store.modalStatus === StatusModals.COLUMN" #form>
         <ColumnForm />
+      </template>
+      <template v-else-if="store.modalStatus === StatusModals.EDITBOARD" #form>
+        <BoardEdit />
       </template>
     </Modal>
   </div>
