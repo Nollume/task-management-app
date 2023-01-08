@@ -9,7 +9,7 @@
           class="w-[90%] max-w-xl p-4 rounded-xl bg-slate-200 dark:bg-gray-800 max-h-screen overflow-y-auto"
         >
           <div class="flex items-center justify-between mb-6">
-            <h3 class="text-lg">
+            <h3 class="text-lg capitalize">
               <slot name="title" />
             </h3>
             <IconClose @click="openModal = false" />

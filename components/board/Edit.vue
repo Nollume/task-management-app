@@ -29,7 +29,7 @@ const boardTitle = ref<string>(store.currentBoard?.boardTitle!);
 const editBoardTitle = () => {
   store.alert = false;
   if (boardTitle.value === store.currentBoard?.boardTitle!) {
-    store.showAlertMsg("You used the same board name!");
+    store.showAlertMsg(`You used the same board name "${boardTitle.value}"!`);
     return;
   }
   store.alert = false;
@@ -38,7 +38,7 @@ const editBoardTitle = () => {
       (item) => item.boardTitle.toLowerCase() === boardTitle.value.toLowerCase()
     )
   ) {
-    store.showAlertMsg("Board with this name already exists!");
+    store.showAlertMsg(`Board with name "${boardTitle.value}" already exists!`);
     return;
   }
   const oldTiltle = store.currentBoard?.boardTitle;
@@ -48,7 +48,7 @@ const editBoardTitle = () => {
   store.saveToLocalStorage(store.boards);
   store.alert = false;
   store.showAlertMsg(
-    `Board "${oldTiltle}" bol premenovaný na "${boardTitle.value}".`,
+    `Board "${oldTiltle}" has been renamed to "${boardTitle.value}".`,
     "succeed"
   );
 };

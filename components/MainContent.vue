@@ -23,33 +23,11 @@
           v-for="(column, index) in currentBoard.columns"
           :key="column.statusTitle"
         >
-          <div
-            class="whitespace-nowrap flex items-center gap-2 pb-2 mb-2 mx-1 border-b border-gray-900/10 dark:border-neutral-200/10"
-          >
-            <div
-              class="w-4 h-4 rounded-full"
-              :class="column.badge ? column.badge : 'bg-amber-400'"
-            ></div>
-            <h4 class="uppercase">
-              {{ column.statusTitle }} ({{ tasksLength(column.statusTitle) }})
-            </h4>
-            <div
-              v-if="
-                column.statusTitle !== 'done' &&
-                column.statusTitle !== 'todo' &&
-                column.statusTitle !== 'doing'
-              "
-              @click="
-                store.removeColumnOpenModal({
-                  statusTitle: column.statusTitle,
-                  index: index,
-                })
-              "
-              class="ml-auto bg-red-400 hover:bg-red-300 p-1.5 rounded-md cursor-pointer"
-            >
-              <IconRemove />
-            </div>
-          </div>
+          <ColumnCol
+            :column="column"
+            :index="index"
+            :tasksLength="tasksLength"
+          />
           <TransitionGroup
             tag="ul"
             name="fade"
@@ -58,13 +36,23 @@
             <template v-for="task in currentBoard.tasks" :key="task.taskId">
               <li
                 v-if="task.status === column.statusTitle"
-                @click="CardOpenModal"
+                @click="CardOpenModal(task.taskId)"
                 class="bg-slate-200 dark:bg-gray-800 p-4 rounded-xl shadow-lg"
               >
                 <h5
-                  class="pb-2 border-b border-gray-900/10 dark:border-neutral-200/10"
+                  class="pb-2 border-b border-gray-900/10 dark:border-neutral-200/10 capitalize sm:hidden"
                 >
-                  {{ task.taskTitle }}
+                  {{ validateStr(task.taskTitle, 13) }}
+                </h5>
+                <h5
+                  class="hidden pb-2 border-b border-gray-900/10 dark:border-neutral-200/10 capitalize sm:block lg:hidden"
+                >
+                  {{ validateStr(task.taskTitle, 30) }}
+                </h5>
+                <h5
+                  class="hidden pb-2 border-b border-gray-900/10 dark:border-neutral-200/10 capitalize lg:block"
+                >
+                  {{ validateStr(task.taskTitle, 23) }}
                 </h5>
                 <p
                   v-if="task.subtasks.length > 1"
@@ -97,17 +85,14 @@
 </template>
 
 <script setup lang="ts">
+import { StatusModals } from "@/interfaces";
 import { storeToRefs } from "pinia";
-import { StatusModals } from "~/interfaces";
 import { useBoardStore } from "~/stores/board";
+import { validateStr } from "@/helpers/helper";
+
 const store = useBoardStore();
-
-const { boards, currentBoard } = storeToRefs(store);
-
-const CardOpenModal = () => {
-  store.openModal = true;
-  store.modalStatus = StatusModals.CARD;
-};
+const { boards, currentBoard, currentCardId, openModal, modalStatus } =
+  storeToRefs(store);
 
 const tasksLength = (columnStatus: string) => {
   const taskLength = currentBoard.value?.tasks.filter(
@@ -115,6 +100,13 @@ const tasksLength = (columnStatus: string) => {
   );
 
   return taskLength?.length;
+};
+
+const CardOpenModal = (id: number) => {
+  openModal.value = true;
+  modalStatus.value = StatusModals.CARD;
+
+  currentCardId.value = id;
 };
 </script>
 

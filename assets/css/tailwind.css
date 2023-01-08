@@ -43,4 +43,7 @@
   .radioInput::after {
     @apply inset-0 bg-transparent border-2 border-gray-900 rounded-full hidden;
   }
+  .checkbox:checked ~ label {
+    @apply line-through;
+  }
 }

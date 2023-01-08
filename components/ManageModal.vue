@@ -8,7 +8,11 @@
         >Add New Board</template
       >
       <template v-else-if="store.modalStatus === StatusModals.CARD" #title
-        >Card title</template
+        ><span class="sm:hidden">
+          {{ validateStr(store.currentCard?.taskTitle, 12) }} </span
+        ><span class="hidden sm:inline">
+          {{ validateStr(store.currentCard?.taskTitle, 33) }}
+        </span></template
       >
       <template v-else-if="store.modalStatus === StatusModals.COLUMN" #title
         >Add New Column</template
@@ -63,6 +67,7 @@
 <script setup lang="ts">
 import { useBoardStore } from "@/stores/board";
 import { StatusModals } from "~/interfaces";
+import { validateStr } from "@/helpers/helper";
 const store = useBoardStore();
 </script>
 

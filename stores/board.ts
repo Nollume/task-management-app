@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { generateRandomId } from "@/helpers/helper";
 import {
   StatusModals,
   board,
@@ -12,6 +13,8 @@ export const useBoardStore = defineStore("board", {
   state: () => ({
     boards: [] as board[],
     currentBoardId: null as number | null,
+
+    currentCardId: null as number | null,
 
     openModal: false as boolean,
     modalStatus: StatusModals.TASK as string,
@@ -33,6 +36,13 @@ export const useBoardStore = defineStore("board", {
       return state.boards.findIndex(
         (board) => board.boardId === state.currentBoardId
       );
+    },
+    currentCard: (state) => {
+      const currentBoard = state.boards.find(
+        (b) => b.boardId === state.currentBoardId
+      );
+
+      return currentBoard?.tasks.find((t) => t.taskId === state.currentCardId);
     },
   },
   actions: {
@@ -144,7 +154,11 @@ export const useBoardStore = defineStore("board", {
       let subTasksArr: subtask[] = [];
 
       for (const i of subtasks) {
-        subTasksArr.push({ subtaskTitle: i, done: false });
+        subTasksArr.push({
+          subtaskTitle: i,
+          done: false,
+          subtaskId: generateRandomId(i),
+        });
       }
 
       const task: task = {

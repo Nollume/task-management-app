@@ -24,8 +24,11 @@
       class="flex gap-2 items-center justify-end pb-4 border-b border-gray-900/10 dark:border-neutral-200/10"
       :class="{ 'lg:flex-col': !store.openTasksBar }"
     >
-      <div class="mr-auto p-1.5 cursor-pointer lg:hidden">
-        <IconClose @click="openTasksBar = false" />
+      <div
+        class="mr-auto p-1.5 cursor-pointer lg:hidden"
+        @click="openTasksBar = false"
+      >
+        <IconClose />
       </div>
       <h2
         class="hidden lg:flex gap-2 lg:items-center mr-auto capitalize text-lg text-indigo-500"
@@ -75,7 +78,7 @@
     </ul>
 
     <setColorTheme
-      class="sm:w-52 sm:self-center lg:w-auto lg:mt-auto"
+      class="sm:w-52 sm:self-center lg:w-auto"
       :class="{
         'lg:vertical-text lg:rotate-180 lg:py-4 lg:px-2': !openTasksBar,
       }"

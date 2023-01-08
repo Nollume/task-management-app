@@ -28,6 +28,7 @@ export interface statuses {
   badge: string;
 }
 export interface subtask {
+  subtaskId: string;
   subtaskTitle: string;
   done: boolean;
 }

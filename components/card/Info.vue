@@ -2,21 +2,25 @@
   <div class="grid gap-4 mt-8">
     <ul class="grid gap-2">
       <li>
-        <h4>Subtasks (2 of 3)</h4>
+        <h4>
+          Subtasks ({{ completeSubtasks }} of
+          {{ store.currentCard?.subtasks.length }})
+        </h4>
       </li>
       <li
+        v-for="subtask in store.currentCard?.subtasks"
+        :key="subtask.subtaskId"
         class="flex items-center gap-4 w-full px-2 py-2 bg-slate-300 dark:bg-gray-900"
       >
-        <input type="checkbox" name="subtasks" id="subtask" checked />
-        <label class="checked:line-through" for="subtask"
-          >Subtask description</label
-        >
-      </li>
-      <li
-        class="flex items-center gap-4 w-full px-2 py-2 bg-slate-300 dark:bg-gray-900"
-      >
-        <input type="checkbox" name="subtasks" id="subtask" />
-        <label for="subtask">Subtask description</label>
+        <input
+          class="checkbox cursor-pointer"
+          type="checkbox"
+          name="subtasks"
+          :id="subtask.subtaskId"
+        />
+        <label class="cursor-pointer" :for="subtask.subtaskId">{{
+          subtask.subtaskTitle
+        }}</label>
       </li>
     </ul>
     <div class="flex flex-col gap-1">
@@ -34,15 +38,15 @@
           class="cursor-pointer px-2 relative py-1 w-full appearance-none bg-transparent outline-none border border-gray-900/10 dark:border-neutral-200/10 z-20"
           name="status"
           id="status"
+          v-model="status"
         >
-          <option class="bg-slate-200 dark:bg-gray-800" value="todo">
-            Todo
-          </option>
-          <option class="bg-slate-200 dark:bg-gray-800" value="doing">
-            Doing
-          </option>
-          <option class="bg-slate-200 dark:bg-gray-800" value="done">
-            Done
+          <option
+            v-for="status in store?.currentBoard?.columns"
+            :key="status.statusTitle"
+            class="bg-slate-200 dark:bg-gray-800"
+            :value="status.statusTitle"
+          >
+            {{ status.statusTitle }}
           </option>
         </select>
       </div>
@@ -50,6 +54,16 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useBoardStore } from "@/stores/board";
+
+const store = useBoardStore();
+
+const status = ref<string>(store.currentCard?.status!);
+
+const completeSubtasks = computed(() => {
+  return store.currentCard?.subtasks.filter((task) => task.done).length;
+});
+</script>
 
 <style scoped></style>
