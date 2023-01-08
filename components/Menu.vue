@@ -1,5 +1,6 @@
 <template>
   <div
+    id="menu-container"
     class="flex flex-col gap-4 absolute top-16 left-2 right-2 bottom-2 p-4 rounded-lg rounded-tl-none duration-300 bg-slate-200 dark:bg-gray-800 z-30 overflow-y-auto overflow-x-hidden sm:max-w-[15rem] lg:static lg:flex lg:mt-14 lg:border-t-4 lg:border-slate-300 lg:dark:border-gray-900 lg:rounded-none"
     :class="openTasksBar ? 'lg:min-w-[15rem] ' : 'hidden  lg:min-w-[5rem]'"
   >
@@ -88,7 +89,7 @@ import { StatusModals } from "~/interfaces";
 import { storeToRefs } from "pinia";
 import { useBoardStore } from "~/stores/board";
 const store = useBoardStore();
-const { openTasksBar, boards, currentBoardId, currentBoard } =
+const { openTasksBar, openModal, boards, currentBoardId, currentBoard } =
   storeToRefs(store);
 
 const removeBoardOpenModal = () => {
@@ -100,4 +101,23 @@ const editBoardOpenModal = () => {
   store.openModal = true;
   store.modalStatus = StatusModals.EDITBOARD;
 };
+
+const closeTaskBar = (e: MouseEvent) => {
+  if (window.matchMedia("(max-width: 63.9375rem)").matches) {
+    if (openTasksBar.value) {
+      if (openModal.value) return;
+      const target = e.target as HTMLElement;
+      if (target.closest("#headline-container")) return;
+      if (!target.closest("#menu-container")) {
+        openTasksBar.value = false;
+      }
+    }
+  }
+};
+onMounted(() => {
+  document.addEventListener("click", closeTaskBar);
+});
+onUnmounted(() => {
+  document.removeEventListener("click", closeTaskBar);
+});
 </script>

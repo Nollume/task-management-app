@@ -41,10 +41,16 @@ const editBoardTitle = () => {
     store.showAlertMsg("Board with this name already exists!");
     return;
   }
+  const oldTiltle = store.currentBoard?.boardTitle;
 
   store.currentBoard!.boardTitle = boardTitle.value;
 
   store.saveToLocalStorage(store.boards);
+  store.alert = false;
+  store.showAlertMsg(
+    `Board "${oldTiltle}" bol premenovaný na "${boardTitle.value}".`,
+    "succeed"
+  );
 };
 
 const titleInput = ref<HTMLInputElement>(null!);

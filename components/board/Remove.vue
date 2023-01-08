@@ -52,7 +52,9 @@ const deleteBoard = () => {
     localStorage.removeItem("currentBoardId");
     localStorage.removeItem("boards");
   }
-
+  store.openModal = false;
+  
+  store.alert = false;
   store.showAlertMsg(`Board "${boardTitle}" deleted!`, "succeed");
 };
 </script>

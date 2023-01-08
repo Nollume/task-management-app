@@ -22,6 +22,8 @@ export const useBoardStore = defineStore("board", {
     alertColor: "" as string,
 
     columnToDelete: {} as column,
+
+    timer: setTimeout(() => {}) as ReturnType<typeof setTimeout>,
   }),
   getters: {
     currentBoard: (state) => {
@@ -36,11 +38,12 @@ export const useBoardStore = defineStore("board", {
   actions: {
     showAlertMsg(text: string, alertColor: string = "warn") {
       if (!this.alert) {
+        window.clearTimeout(this.timer);
         this.alert = true;
         this.alertMsg = text;
         this.alertColor = alertColor;
 
-        setTimeout(() => {
+        this.timer = setTimeout(() => {
           this.alert = false;
         }, 5000);
       }
@@ -106,7 +109,7 @@ export const useBoardStore = defineStore("board", {
       }
 
       this.saveToLocalStorage(this.boards);
-      
+
       this.setCurrentBoardId(id);
 
       this.alert = false;
@@ -154,7 +157,6 @@ export const useBoardStore = defineStore("board", {
 
       this.currentBoard?.tasks.push(task);
       this.saveToLocalStorage(this.boards);
-      
 
       this.alert = false;
       this.showAlertMsg(`Task "${taskTitle}" created!`, "succeed");
@@ -177,7 +179,6 @@ export const useBoardStore = defineStore("board", {
       };
       this.currentBoard?.columns.push(column);
       this.saveToLocalStorage(this.boards);
-      
 
       this.alert = false;
       this.showAlertMsg(`Column "${statusTitle}" created!`, "succeed");
