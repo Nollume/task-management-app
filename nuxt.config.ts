@@ -11,4 +11,7 @@ export default defineNuxtConfig({
     injectPosition: 0,
     viewer: true,
   },
+  nitro: {
+    preset: "vercel-edge",
+  },
 });
