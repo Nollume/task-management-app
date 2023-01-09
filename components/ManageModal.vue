@@ -8,9 +8,9 @@
         >Add New Board</template
       >
       <template v-else-if="store.modalStatus === StatusModals.CARD" #title
-        ><span class="sm:hidden">
+        ><span v-if="store.currentCardId" class="sm:hidden">
           {{ validateStr(store.currentCard?.taskTitle, 12) }} </span
-        ><span class="hidden sm:inline">
+        ><span v-if="store.currentCardId" class="hidden sm:inline">
           {{ validateStr(store.currentCard?.taskTitle, 33) }}
         </span></template
       >
@@ -31,7 +31,7 @@
         >Edit Board Title</template
       >
       <template v-if="store.modalStatus === StatusModals.CARD" #description>
-        <CardDescription />
+        <CardDescription @send-description="description = $event" />
       </template>
       <template
         v-if="store.modalStatus === StatusModals.REMOVECOLUMN"
@@ -53,7 +53,7 @@
         <BoardForm
       /></template>
       <template v-else-if="store.modalStatus === StatusModals.CARD" #form>
-        <CardInfo /> </template
+        <CardInfo :description="description" /> </template
       ><template v-else-if="store.modalStatus === StatusModals.COLUMN" #form>
         <ColumnForm />
       </template>
@@ -69,6 +69,8 @@ import { useBoardStore } from "@/stores/board";
 import { StatusModals } from "~/interfaces";
 import { validateStr } from "@/helpers/helper";
 const store = useBoardStore();
+
+const description = ref<string>("");
 </script>
 
 <style scoped></style>

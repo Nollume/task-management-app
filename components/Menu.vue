@@ -66,7 +66,7 @@
       <li
         v-for="board in boards"
         :key="board.boardId"
-        @click="store.setCurrentBoardId(board.boardId)"
+        @click="toggleBoards(board.boardId)"
         class="flex gap-2 cursor-pointer hover:text-indigo-400 capitalize pt-1.5"
         :class="{ 'text-indigo-500': currentBoardId === board.boardId }"
       >
@@ -103,6 +103,13 @@ const removeBoardOpenModal = () => {
 const editBoardOpenModal = () => {
   store.openModal = true;
   store.modalStatus = StatusModals.EDITBOARD;
+};
+
+const toggleBoards = (id: number) => {
+  store.setCurrentBoardId(id);
+  if (window.matchMedia("(max-width: 63.9375rem)").matches) {
+    openTasksBar.value = false;
+  }
 };
 
 const closeTaskBar = (e: MouseEvent) => {

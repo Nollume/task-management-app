@@ -27,6 +27,10 @@ export const useBoardStore = defineStore("board", {
     columnToDelete: {} as column,
 
     timer: setTimeout(() => {}) as ReturnType<typeof setTimeout>,
+
+    deleteCardModal: false as boolean,
+    editableCard: false as boolean,
+    editedCardTitle: "" as string,
   }),
   getters: {
     currentBoard: (state) => {
@@ -58,10 +62,12 @@ export const useBoardStore = defineStore("board", {
         }, 5000);
       }
     },
-    saveToLocalStorage(board: board[]) {
+    saveToLocalStorage(board: board[], close: number = 0) {
       const boardString = JSON.stringify(board);
       localStorage.setItem("boards", boardString);
-      this.openModal = false;
+      if (!close) {
+        this.openModal = false;
+      }
     },
     getStorageBoard() {
       const getBoard: board[] = JSON.parse(localStorage.getItem("boards")!);

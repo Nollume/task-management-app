@@ -37,7 +37,7 @@
               <li
                 v-if="task.status === column.statusTitle"
                 @click="CardOpenModal(task.taskId)"
-                class="bg-slate-200 dark:bg-gray-800 p-4 rounded-xl shadow-lg"
+                class="bg-slate-200 dark:bg-gray-800 p-4 shadow-sm rounded-xl cursor-pointer border-2 border-gray-900/10 dark:border-neutral-200/10 hover:border-indigo-500 hover:dark:border-indigo-500"
               >
                 <h5
                   class="pb-2 border-b border-gray-900/10 dark:border-neutral-200/10 capitalize sm:hidden"
@@ -58,13 +58,14 @@
                   v-if="task.subtasks.length > 1"
                   class="text-sm pt-2 opacity-75"
                 >
-                  0 of {{ task.subtasks.length }} subtasks
+                  {{ completeSubtasks(task.subtasks) }} of
+                  {{ task.subtasks.length }} subtasks
                 </p>
                 <p
                   v-else-if="task.subtasks.length === 1"
                   class="text-sm pt-2 opacity-75"
                 >
-                  0 of 1 subtask
+                  {{ completeSubtasks(task.subtasks) }} of 1 subtask
                 </p>
                 <p v-else class="text-sm pt-2 opacity-75">No subtasks</p>
               </li>
@@ -85,7 +86,7 @@
 </template>
 
 <script setup lang="ts">
-import { StatusModals } from "@/interfaces";
+import { StatusModals, subtask } from "@/interfaces";
 import { storeToRefs } from "pinia";
 import { useBoardStore } from "~/stores/board";
 import { validateStr } from "@/helpers/helper";
@@ -100,6 +101,10 @@ const tasksLength = (columnStatus: string) => {
   );
 
   return taskLength?.length;
+};
+
+const completeSubtasks = (subtasks: subtask[]) => {
+  return subtasks.filter((task) => task.done).length;
 };
 
 const CardOpenModal = (id: number) => {

@@ -1,39 +1,47 @@
 <template>
-  <div class="grid gap-4 mt-8">
-    <ul class="grid gap-2">
+  <form @submit.prevent="saveEditCard()" class="grid gap-4 mt-4">
+    <ul class="grid gap-2" v-if="store.currentCard?.subtasks.length">
       <li>
         <h4>
           Subtasks ({{ completeSubtasks }} of
           {{ store.currentCard?.subtasks.length }})
         </h4>
       </li>
-      <li
-        v-for="subtask in store.currentCard?.subtasks"
-        :key="subtask.subtaskId"
-        class="flex items-center gap-4 w-full px-2 py-2 bg-slate-300 dark:bg-gray-900"
-      >
-        <input
-          class="checkbox cursor-pointer"
-          type="checkbox"
-          name="subtasks"
-          :id="subtask.subtaskId"
-        />
-        <label class="cursor-pointer" :for="subtask.subtaskId">{{
-          subtask.subtaskTitle
-        }}</label>
-      </li>
+      <template v-if="store.editableCard">
+        <li
+          v-for="subtask in store.currentCard?.subtasks"
+          :key="subtask.subtaskId"
+          class="flex items-center gap-4 w-full px-2 py-2 bg-slate-300 dark:bg-gray-900 rounded-sm"
+        >
+          <input
+            class="checkbox cursor-pointer"
+            type="checkbox"
+            name="subtasks"
+            :value="subtask.subtaskTitle"
+            :id="subtask.subtaskId"
+            v-model="checkedSubtask"
+          />
+          <label class="cursor-pointer" :for="subtask.subtaskId">{{
+            subtask.subtaskTitle
+          }}</label>
+        </li>
+      </template>
+      <template v-else>
+        <li
+          v-for="subtask in store.currentCard?.subtasks"
+          :key="subtask.subtaskId"
+          class="flex items-center gap-4 w-full px-4 py-2 bg-slate-300 dark:bg-gray-900 rounded-sm"
+          :class="{ 'line-through': subtask.done }"
+        >
+          <p>{{ subtask.subtaskTitle }}</p>
+        </li>
+      </template>
     </ul>
-    <div class="flex flex-col gap-1">
+    <p v-else>No subtasks</p>
+    <div v-if="store.editableCard" class="flex flex-col gap-1">
       <div><label class="cursor-pointer" for="status">Status</label></div>
       <div class="relative">
-        <svg
-          class="absolute -rotate-90 arrow fill-current w-5 h-5 transition-transform duration-300 ease-in-out cursor-pointer right-2 top-1/2 -translate-y-1/2 z-10"
-          viewBox="0 0 20 20"
-        >
-          <path
-            d="M8.388,10.049l4.76-4.873c0.303-0.31,0.297-0.804-0.012-1.105c-0.309-0.304-0.803-0.293-1.105,0.012L6.726,9.516c-0.303,0.31-0.296,0.805,0.012,1.105l5.433,5.307c0.152,0.148,0.35,0.223,0.547,0.223c0.203,0,0.406-0.08,0.559-0.236c0.303-0.309,0.295-0.803-0.012-1.104L8.388,10.049z"
-          ></path>
-        </svg>
+        <IconArrowDown />
         <select
           class="cursor-pointer px-2 relative py-1 w-full appearance-none bg-transparent outline-none border border-gray-900/10 dark:border-neutral-200/10 z-20"
           name="status"
@@ -51,18 +59,80 @@
         </select>
       </div>
     </div>
-  </div>
+    <div v-else>
+      <p>
+        Status : <span class="uppercase">{{ store?.currentCard?.status }}</span>
+      </p>
+    </div>
+    <div v-if="store.editableCard" class="w-full grid grid-cols-2 gap-2">
+      <a
+        @click.pevent="cancelEditable"
+        class="text-center text-neutral-200 bg-gray-500 hover:bg-gray-400 rounded-full py-1 cursor-pointer"
+        >Cancel</a
+      >
+      <button
+        class="text-neutral-200 bg-indigo-500 hover:bg-indigo-400 rounded-full py-1"
+      >
+        Save
+      </button>
+    </div>
+  </form>
 </template>
 
 <script setup lang="ts">
 import { useBoardStore } from "@/stores/board";
-
 const store = useBoardStore();
 
+const props = defineProps<{
+  description: string;
+}>();
+
+const checkedSubtask = ref<string[]>([]);
 const status = ref<string>(store.currentCard?.status!);
 
 const completeSubtasks = computed(() => {
   return store.currentCard?.subtasks.filter((task) => task.done).length;
+});
+
+const saveEditCard = () => {
+  const oldTiltle = store.currentCard?.taskTitle;
+  const title = store.editedCardTitle.length
+    ? store.editedCardTitle
+    : store.currentCard?.taskTitle;
+
+  store.currentCard!.taskTitle = title!;
+  store.currentCard!.taskDescription = props.description;
+  store.currentCard!.status = status.value;
+
+  for (const i of store.currentCard?.subtasks!) {
+    checkedSubtask.value.includes(i.subtaskTitle)
+      ? (i.done = true)
+      : (i.done = false);
+  }
+
+  store.editedCardTitle = "";
+
+  store.saveToLocalStorage(store.boards, 1);
+  store.alert = false;
+  store.showAlertMsg(`Task "${oldTiltle}" has been edited.`, "succeed");
+  store.editableCard = false;
+};
+
+const chceckInputs = () => {
+  for (const i of store.currentCard?.subtasks!) {
+    if (i.done) {
+      if (checkedSubtask.value.includes(i.subtaskTitle)) return;
+      checkedSubtask.value.push(i.subtaskTitle);
+    }
+  }
+};
+const cancelEditable = () => {
+  store.editableCard = false;
+  chceckInputs();
+};
+
+onMounted(() => {
+  chceckInputs();
 });
 </script>
 
