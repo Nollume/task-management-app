@@ -1,8 +1,5 @@
 <template>
-  <form
-    @submit.prevent="store.createTask(title, description, status, subtasks)"
-    class="grid gap-4"
-  >
+  <form @submit.prevent="createTask" class="grid gap-4">
     <div class="flex flex-col gap-1">
       <div><label class="cursor-pointer" for="title">Title</label></div>
       <input
@@ -93,6 +90,8 @@
 </template>
 
 <script setup lang="ts">
+import { subtask } from "@/interfaces";
+import { generateRandomId } from "@/helpers/helper";
 import { useBoardStore } from "@/stores/board";
 const store = useBoardStore();
 const title = ref<string>("");
@@ -109,6 +108,48 @@ const addSubtask = () => {
 };
 const removeSubtask = (task: string) => {
   subtasks.value.delete(task);
+};
+
+const getUniqueTaskId = () => {
+  let id: number;
+  if (!store.currentBoard?.tasks.length) id = 1;
+  else id = Math.max(...store.currentBoard?.tasks.map((b) => b.taskId)) + 1;
+  return id;
+};
+const createTask = () => {
+  if (!title.value || !description.value) return;
+  if (
+    store.currentBoard?.tasks.some(
+      (item) => item.taskTitle.toLowerCase() === title.value.toLowerCase()
+    )
+  ) {
+    store.showAlertMsg("Task with this name already exists!");
+    return;
+  }
+
+  let subTasksArr: subtask[] = [];
+
+  for (const i of subtasks.value) {
+    subTasksArr.push({
+      subtaskTitle: i,
+      done: false,
+      subtaskId: generateRandomId(i),
+    });
+  }
+
+  const task = {
+    taskTitle: title.value,
+    taskId: getUniqueTaskId(),
+    taskDescription: description.value,
+    subtasks: subTasksArr,
+    status: status.value,
+  };
+
+  store.currentBoard?.tasks.push(task);
+  store.saveToLocalStorage(store.boards);
+
+  store.alert = false;
+  store.showAlertMsg(`Task "${title.value}" created!`, "succeed");
 };
 </script>
 
