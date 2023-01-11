@@ -43,7 +43,7 @@ const pathLenght = ref<number>();
 const warning = ref<number>(Math.floor(store.maxTitleLength * (3 / 4)));
 const danger = ref<number>(Math.floor(store.maxTitleLength * (3.8 / 4)));
 
-const animateCircle = (e: KeyboardEvent) => {
+const animateCircle = () => {
   const percent = props.titleLength / store.maxTitleLength;
   if (props.titleLength <= store.maxTitleLength) {
     const newOffset = pathLenght.value! - pathLenght.value! * percent;
@@ -61,6 +61,7 @@ onMounted(async () => {
   await nextTick(() => {
     pathLenght.value = progress.value.getTotalLength();
   });
+  animateCircle();
 });
 </script>
 
