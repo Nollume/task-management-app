@@ -16,7 +16,7 @@ import { StatusModals } from "~/interfaces";
 import { useBoardStore } from "~/stores/board";
 const store = useBoardStore();
 const newColumnOpenModal = () => {
-  store.openModal = true;
+  store.openModalFn();
   store.modalStatus = StatusModals.COLUMN;
 };
 </script>

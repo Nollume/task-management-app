@@ -96,12 +96,12 @@ const { openTasksBar, openModal, boards, currentBoardId, currentBoard } =
   storeToRefs(store);
 
 const removeBoardOpenModal = () => {
-  store.openModal = true;
+  store.openModalFn();
   store.modalStatus = StatusModals.REMOVEBOARD;
 };
 
 const editBoardOpenModal = () => {
-  store.openModal = true;
+  store.openModalFn();
   store.modalStatus = StatusModals.EDITBOARD;
 };
 

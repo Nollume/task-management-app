@@ -60,8 +60,8 @@
       </div>
     </div>
     <div v-else>
-      <p>
-        Status : <span class="uppercase">{{ store?.currentCard?.status }}</span>
+      <p>Status:
+        <span class="uppercase">{{ store?.currentCard?.status }}</span>
       </p>
     </div>
     <div v-if="store.editableCard" class="w-full grid grid-cols-2 gap-2">
@@ -119,6 +119,7 @@ const saveEditCard = () => {
 };
 
 const chceckInputs = () => {
+  checkedSubtask.value.length = 0;
   for (const i of store.currentCard?.subtasks!) {
     if (i.done) {
       if (checkedSubtask.value.includes(i.subtaskTitle)) return;
@@ -127,8 +128,8 @@ const chceckInputs = () => {
   }
 };
 const cancelEditable = () => {
-  store.editableCard = false;
   chceckInputs();
+  store.editableCard = false;
 };
 
 onMounted(() => {

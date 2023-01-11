@@ -17,6 +17,7 @@ export const useBoardStore = defineStore("board", {
     currentCardId: null as number | null,
 
     openModal: false as boolean,
+    isOpenModal: false as boolean,
     modalStatus: StatusModals.TASK as string,
     openTasksBar: false as boolean,
 
@@ -29,6 +30,7 @@ export const useBoardStore = defineStore("board", {
     timer: setTimeout(() => {}) as ReturnType<typeof setTimeout>,
 
     deleteCardModal: false as boolean,
+    isDeleteCardModal: false as boolean,
     editableCard: false as boolean,
     editedCardTitle: "" as string,
   }),
@@ -61,6 +63,12 @@ export const useBoardStore = defineStore("board", {
           this.alert = false;
         }, 5000);
       }
+    },
+    openModalFn() {
+      this.openModal = true;
+      setTimeout(() => {
+        this.isOpenModal = true;
+      }, 100);
     },
     saveToLocalStorage(board: board[], close: number = 0) {
       const boardString = JSON.stringify(board);
@@ -204,7 +212,7 @@ export const useBoardStore = defineStore("board", {
       this.showAlertMsg(`Column "${statusTitle}" created!`, "succeed");
     },
     removeColumnOpenModal(colInfo: column) {
-      this.openModal = true;
+      this.openModalFn();
       this.modalStatus = StatusModals.REMOVECOLUMN;
       this.columnToDelete = colInfo;
     },

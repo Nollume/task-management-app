@@ -6,6 +6,7 @@
         v-if="openModal"
       >
         <div
+          id="main-modal"
           class="w-[90%] max-w-xl p-4 rounded-xl bg-slate-200 dark:bg-gray-800 max-h-screen overflow-y-auto relative"
         >
           <div class="flex items-center justify-between mb-4">
@@ -23,7 +24,11 @@
               />
             </div>
 
-            <IconClose @click="closeModal" class="ml-3" :class="{'self-start' : store.editableCard }" />
+            <IconClose
+              @click="closeModal"
+              class="ml-3"
+              :class="{ 'self-start': store.editableCard }"
+            />
           </div>
           <slot name="description" />
           <slot name="form" />
@@ -38,7 +43,8 @@
 import { useBoardStore } from "@/stores/board";
 import { storeToRefs } from "pinia";
 const store = useBoardStore();
-const { openModal, editableCard, currentCard } = storeToRefs(store);
+const { openModal, editableCard, currentCard, isOpenModal } =
+  storeToRefs(store);
 
 /**
  * close Modal
@@ -46,6 +52,7 @@ const { openModal, editableCard, currentCard } = storeToRefs(store);
 
 const closeModal = () => {
   openModal.value = false;
+  isOpenModal.value = false;
   editableCard.value = false;
 };
 
@@ -55,15 +62,29 @@ const closeModal = () => {
 
 const closeModalOnEsc = (e: KeyboardEvent) => {
   if (e.code === "Escape" && openModal.value) {
-    openModal.value = false;
-    editableCard.value = false;
+    closeModal();
   }
 };
+
+/**
+ * close on click
+ */
+
+const closeModalOnClick = (e: MouseEvent) => {
+  const target = e.target as HTMLElement;
+  if (!isOpenModal.value) return;
+  if (!target.closest("#main-modal")) {
+    closeModal();
+  }
+};
+
 onMounted(() => {
   document.addEventListener("keyup", closeModalOnEsc);
+  document.addEventListener("click", closeModalOnClick);
 });
 onUnmounted(() => {
   document.removeEventListener("keyup", closeModalOnEsc);
+  document.removeEventListener("click", closeModalOnClick);
 });
 </script>
 

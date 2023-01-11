@@ -13,7 +13,7 @@ import { StatusModals } from "~/interfaces";
 const store = useBoardStore();
 
 const newTaskOpenModal = () => {
-  store.openModal = true;
+  store.openModalFn();
   store.modalStatus = StatusModals.TASK;
 };
 </script>

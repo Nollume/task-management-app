@@ -92,7 +92,7 @@ import { useBoardStore } from "~/stores/board";
 import { validateStr } from "@/helpers/helper";
 
 const store = useBoardStore();
-const { boards, currentBoard, currentCardId, openModal, modalStatus } =
+const { boards, currentBoard, currentCardId, modalStatus } =
   storeToRefs(store);
 
 const tasksLength = (columnStatus: string) => {
@@ -108,7 +108,7 @@ const completeSubtasks = (subtasks: subtask[]) => {
 };
 
 const CardOpenModal = (id: number) => {
-  openModal.value = true;
+  store.openModalFn();
   modalStatus.value = StatusModals.CARD;
 
   currentCardId.value = id;

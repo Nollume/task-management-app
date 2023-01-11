@@ -11,7 +11,7 @@
       </svg>
     </div>
     <div
-      @click="store.deleteCardModal = true"
+      @click="openDeleteCardModal"
       class="bg-red-400 hover:bg-red-300 p-1.5 rounded-md cursor-pointer"
     >
       <svg class="w-4 h-4 fill-slate-200" viewBox="0 0 20 20">
@@ -26,6 +26,13 @@
 <script setup lang="ts">
 import { useBoardStore } from "@/stores/board";
 const store = useBoardStore();
+
+const openDeleteCardModal = () => {
+  store.deleteCardModal = true;
+  setTimeout(() => {
+    store.isDeleteCardModal = true;
+  }, 100);
+};
 </script>
 
 <style scoped></style>
