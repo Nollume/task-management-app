@@ -1,17 +1,25 @@
 <template>
-  <form @submit.prevent="createBoard" class="grid gap-4">
+  <form @submit.prevent="createBoard()" class="grid gap-4">
     <div class="flex flex-col gap-1">
       <div>
         <label class="cursor-pointer" for="board-title">Title</label>
       </div>
-      <input
-        class="input"
-        type="text"
-        id="board-title"
-        placeholder="Board Title"
-        v-model.trim="boardTitle"
-        required
-      />
+      <div class="relative">
+        <input
+          @input="animateCircle"
+          class="input pr-10"
+          type="text"
+          id="board-title"
+          placeholder="Board Title"
+          v-model.trim="boardTitle"
+          required
+        />
+        <IconAnimateCircle
+          @animateCircle="animateCircle = $event"
+          :titleLength="titleLength"
+          class="absolute top-1/2 right-1.5 -translate-y-1/2"
+        />
+      </div>
     </div>
     <button
       class="text-neutral-200 bg-indigo-500 hover:bg-indigo-400 rounded-full w-full py-1"
@@ -36,6 +44,11 @@ const getUniqueBoardId = () => {
 
 const createBoard = () => {
   if (!boardTitle.value) return;
+  if (boardTitle.value.length > store.maxTitleLength) {
+    store.showAlertMsg("The title is too long!");
+    return;
+  }
+  store.alert = false;
   if (
     store.boards.some(
       (item) => item.boardTitle.toLowerCase() === boardTitle.value.toLowerCase()
@@ -77,6 +90,10 @@ const createBoard = () => {
   store.alert = false;
   store.showAlertMsg(`Board "${boardTitle.value}" created!`, "succeed");
 };
+//**title length */
+const titleLength = computed(() => boardTitle.value.length);
+
+const animateCircle = ref<() => void>();
 </script>
 
 <style scoped></style>

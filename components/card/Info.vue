@@ -66,7 +66,8 @@
       </p>
     </div>
     <div v-if="store.editableCard" class="w-full grid grid-cols-2 gap-2">
-      <a id="cancelEditing"
+      <a
+        id="cancelEditing"
         @click.pevent="cancelEditable"
         class="text-center text-neutral-200 bg-gray-500 hover:bg-gray-400 rounded-full py-1 cursor-pointer"
         >Cancel</a
@@ -97,6 +98,11 @@ const completeSubtasks = computed(() => {
 
 const saveEditCard = () => {
   const oldTiltle = store.currentCard?.taskTitle;
+  store.alert = false;
+  if (store.editedCardTitle.length > store.maxTitleLength) {
+    store.showAlertMsg("The title is too long!");
+    return;
+  }
   const title = store.editedCardTitle.length
     ? store.editedCardTitle
     : store.currentCard?.taskTitle;
@@ -114,7 +120,7 @@ const saveEditCard = () => {
   store.editedCardTitle = "";
 
   store.saveToLocalStorage(store.boards, 1);
-  store.alert = false;
+
   store.showAlertMsg(`Task "${oldTiltle}" has been edited.`, "succeed");
   store.editableCard = false;
 };

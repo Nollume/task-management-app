@@ -4,14 +4,22 @@
       <div>
         <label class="cursor-pointer" for="Column-title">Title</label>
       </div>
-      <input
-        class="input"
-        type="text"
-        id="Column-title"
-        placeholder="Column Title"
-        required
-        v-model="columnTitle"
-      />
+      <div class="relative">
+        <input
+          @input="animateCircle"
+          class="input pr-10"
+          type="text"
+          id="Column-title"
+          placeholder="Column Title"
+          required
+          v-model="columnTitle"
+        />
+        <IconAnimateCircle
+          @animateCircle="animateCircle = $event"
+          :titleLength="titleLength"
+          class="absolute top-1/2 right-1.5 -translate-y-1/2"
+        />
+      </div>
     </div>
     <div>
       <p class="mr-auto mb-1">Badge</p>
@@ -68,6 +76,11 @@ const badgesColors = reactive<string[]>([
 ]);
 
 const createColumn = () => {
+  store.alert = false;
+  if (columnTitle.value.length > store.maxTitleLength) {
+    store.showAlertMsg("The title is too long!");
+    return;
+  }
   if (
     store.currentBoard?.columns.some(
       (item) =>
@@ -87,6 +100,10 @@ const createColumn = () => {
   store.alert = false;
   store.showAlertMsg(`Column "${columnTitle.value}" created!`, "succeed");
 };
+
+const titleLength = computed(() => columnTitle.value.length);
+
+const animateCircle = ref<() => void>();
 </script>
 
 <style scoped></style>

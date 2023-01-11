@@ -15,13 +15,21 @@
             </h3>
             <div v-else class="w-full">
               <label for="cardTitleEditable">Title</label>
-              <input
-                type="text"
-                id="cardTitleEditable"
-                v-model="store.editedCardTitle"
-                :placeholder="currentCard?.taskTitle"
-                class="w-full capitalize px-4 py-2 mt-1 bg-slate-200 dark:bg-gray-800 text-gray-900/60 dark:text-neutral-200/60 border border-indigo-500 outline-none"
-              />
+              <div class="relative">
+                <input
+                  @input="animateCircle"
+                  type="text"
+                  id="cardTitleEditable"
+                  v-model="store.editedCardTitle"
+                  :placeholder="currentCard?.taskTitle"
+                  class="w-full capitalize px-4 py-2 pr-10 mt-1 bg-slate-200 dark:bg-gray-800 text-gray-900/60 dark:text-neutral-200/60 border border-indigo-500 outline-none"
+                />
+                <IconAnimateCircle
+                  @animateCircle="animateCircle = $event"
+                  :titleLength="store.editedCardTitle.length"
+                  class="absolute top-1/2 right-1.5 -translate-y-1/2"
+                />
+              </div>
             </div>
 
             <IconClose
@@ -76,6 +84,8 @@ onUnmounted(() => {
   document.removeEventListener("keyup", closeModalOnEsc);
   document.removeEventListener("click", closeModalOnClick);
 });
+
+const animateCircle = ref<() => void>();
 </script>
 
 <style>

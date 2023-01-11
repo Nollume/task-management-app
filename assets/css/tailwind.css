@@ -46,4 +46,28 @@
   .checkbox:checked ~ label {
     @apply line-through;
   }
+  .progress,
+  .underlay {
+    fill: none;
+    stroke-width: 1;
+  }
+  .progress {
+    stroke-width: 3;
+  }
+
+  .tragedy {
+    stroke-width: 4;
+    animation: blink 0.3s ease-out;
+  }
+  @keyframes blink {
+    0% {
+      stroke-width: 3;
+    }
+    50% {
+      stroke-width: 7;
+    }
+    100% {
+      stroke-width: 3;
+    }
+  }
 }

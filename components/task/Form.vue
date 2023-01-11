@@ -2,14 +2,22 @@
   <form @submit.prevent="createTask" class="grid gap-4">
     <div class="flex flex-col gap-1">
       <div><label class="cursor-pointer" for="title">Title</label></div>
-      <input
-        class="input"
-        type="text"
-        id="title"
-        placeholder="Task Title"
-        v-model="title"
-        required
-      />
+      <div class="relative">
+        <input
+          @input="animateCircle"
+          class="input pr-10"
+          type="text"
+          id="title"
+          placeholder="Task Title"
+          v-model="title"
+          required
+        />
+        <IconAnimateCircle
+          @animateCircle="animateCircle = $event"
+          :titleLength="titleLength"
+          class="absolute top-1/2 right-1.5 -translate-y-1/2"
+        />
+      </div>
     </div>
     <div class="flex flex-col gap-1">
       <div>
@@ -117,7 +125,12 @@ const getUniqueTaskId = () => {
   return id;
 };
 const createTask = () => {
+  store.alert = false;
   if (!title.value || !description.value) return;
+  if (titleLength.value > store.maxTitleLength) {
+    store.showAlertMsg("The title is too long!");
+    return;
+  }
   if (
     store.currentBoard?.tasks.some(
       (item) => item.taskTitle.toLowerCase() === title.value.toLowerCase()
@@ -148,9 +161,12 @@ const createTask = () => {
   store.currentBoard?.tasks.push(task);
   store.saveToLocalStorage(store.boards);
 
-  store.alert = false;
   store.showAlertMsg(`Task "${title.value}" created!`, "succeed");
 };
+
+const titleLength = computed(() => title.value.length);
+
+const animateCircle = ref<() => void>();
 </script>
 
 <style scoped>

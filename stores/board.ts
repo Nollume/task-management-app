@@ -25,6 +25,8 @@ export const useBoardStore = defineStore("board", {
     isDeleteCardModal: false as boolean,
     editableCard: false as boolean,
     editedCardTitle: "" as string,
+
+    maxTitleLength: 30 as number,
   }),
   getters: {
     currentBoard: (state) => {

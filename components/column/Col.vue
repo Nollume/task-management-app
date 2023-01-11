@@ -7,7 +7,9 @@
       :class="column.badge ? column.badge : 'bg-amber-400'"
     ></div>
     <h4 class="uppercase">
-      {{ column.statusTitle }} ({{ tasksLength(column.statusTitle) }})
+      {{ validateStr(column.statusTitle) }} ({{
+        tasksLength(column.statusTitle)
+      }})
     </h4>
     <div
       v-if="
@@ -29,11 +31,12 @@
 </template>
 
 <script setup lang="ts">
+import { validateStr } from "@/helpers/helper";
 import { useBoardStore } from "@/stores/board";
 
 const store = useBoardStore();
 const props = defineProps<{
-  column: { statusTitle: string; badge: string; } ;
+  column: { statusTitle: string; badge: string };
   index: number;
   tasksLength: (columnStatus: string) => number | undefined;
 }>();
