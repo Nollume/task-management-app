@@ -29,6 +29,7 @@ const store = useBoardStore();
 
 const openDeleteCardModal = () => {
   store.deleteCardModal = true;
+  store.isOpenModal = false;
   setTimeout(() => {
     store.isDeleteCardModal = true;
   }, 100);

@@ -66,6 +66,7 @@ export const useBoardStore = defineStore("board", {
     },
     openModalFn() {
       this.openModal = true;
+      this.editedCardTitle = "";
       setTimeout(() => {
         this.isOpenModal = true;
       }, 100);

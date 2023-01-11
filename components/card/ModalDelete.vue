@@ -46,6 +46,10 @@ const store = useBoardStore();
 const closeModal = () => {
   store.deleteCardModal = false;
   store.isDeleteCardModal = false;
+
+  setTimeout(() => {
+    store.isOpenModal = true;
+  }, 100);
 };
 
 const deleteTask = () => {

@@ -72,7 +72,7 @@ const closeModalOnEsc = (e: KeyboardEvent) => {
 
 const closeModalOnClick = (e: MouseEvent) => {
   const target = e.target as HTMLElement;
-  if (!isOpenModal.value) return;
+  if (!isOpenModal.value || target.matches("#cancelEditing")) return;
   if (!target.closest("#main-modal")) {
     closeModal();
   }

@@ -60,12 +60,13 @@
       </div>
     </div>
     <div v-else>
-      <p>Status:
+      <p>
+        Status:
         <span class="uppercase">{{ store?.currentCard?.status }}</span>
       </p>
     </div>
     <div v-if="store.editableCard" class="w-full grid grid-cols-2 gap-2">
-      <a
+      <a id="cancelEditing"
         @click.pevent="cancelEditable"
         class="text-center text-neutral-200 bg-gray-500 hover:bg-gray-400 rounded-full py-1 cursor-pointer"
         >Cancel</a
