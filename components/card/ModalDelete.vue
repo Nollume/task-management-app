@@ -62,7 +62,6 @@ const deleteTask = () => {
   store.saveToLocalStorage(store.boards);
 
   store.deleteCardModal = false;
-  store.openModal = false;
 
   store.alert = false;
   store.showAlertMsg(`Task "${currentTitle}" deleted!`, "succeed");

@@ -25,7 +25,7 @@
             </div>
 
             <IconClose
-              @click="closeModal"
+              @click="store.closeModal"
               class="ml-3"
               :class="{ 'self-start': store.editableCard }"
             />
@@ -47,22 +47,12 @@ const { openModal, editableCard, currentCard, isOpenModal } =
   storeToRefs(store);
 
 /**
- * close Modal
- * */
-
-const closeModal = () => {
-  openModal.value = false;
-  isOpenModal.value = false;
-  editableCard.value = false;
-};
-
-/**
  * close on ESC
  */
 
 const closeModalOnEsc = (e: KeyboardEvent) => {
   if (e.code === "Escape" && openModal.value) {
-    closeModal();
+    store.closeModal();
   }
 };
 
@@ -74,7 +64,7 @@ const closeModalOnClick = (e: MouseEvent) => {
   const target = e.target as HTMLElement;
   if (!isOpenModal.value || target.matches("#cancelEditing")) return;
   if (!target.closest("#main-modal")) {
-    closeModal();
+    store.closeModal();
   }
 };
 

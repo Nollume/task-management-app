@@ -71,11 +71,16 @@ export const useBoardStore = defineStore("board", {
         this.isOpenModal = true;
       }, 100);
     },
+    closeModal() {
+      this.openModal = false;
+      this.isOpenModal = false;
+      this.editableCard = false;
+    },
     saveToLocalStorage(board: board[], close: number = 0) {
       const boardString = JSON.stringify(board);
       localStorage.setItem("boards", boardString);
       if (!close) {
-        this.openModal = false;
+        this.closeModal();
       }
     },
     getStorageBoard() {
@@ -193,25 +198,6 @@ export const useBoardStore = defineStore("board", {
     /**
      * Columns
      */
-    createColumn(statusTitle: string, badge: string) {
-      if (
-        this.currentBoard?.columns.some(
-          (item) => item.statusTitle.toLowerCase() === statusTitle.toLowerCase()
-        )
-      ) {
-        this.showAlertMsg("Column with this name already exists!");
-        return;
-      }
-      const column: statuses = {
-        statusTitle,
-        badge,
-      };
-      this.currentBoard?.columns.push(column);
-      this.saveToLocalStorage(this.boards);
-
-      this.alert = false;
-      this.showAlertMsg(`Column "${statusTitle}" created!`, "succeed");
-    },
     removeColumnOpenModal(colInfo: column) {
       this.openModalFn();
       this.modalStatus = StatusModals.REMOVECOLUMN;

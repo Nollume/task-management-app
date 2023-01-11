@@ -1,8 +1,5 @@
 <template>
-  <form
-    @submit.prevent="store.createColumn(columnTitle, badge)"
-    class="grid gap-4"
-  >
+  <form @submit.prevent="createColumn()" class="grid gap-4">
     <div class="flex flex-col gap-1">
       <div>
         <label class="cursor-pointer" for="Column-title">Title</label>
@@ -44,6 +41,7 @@
 </template>
 
 <script setup lang="ts">
+import { statuses } from "@/interfaces";
 import { useBoardStore } from "@/stores/board";
 
 const store = useBoardStore();
@@ -68,6 +66,27 @@ const badgesColors = reactive<string[]>([
   "bg-rose-700",
   "bg-emerald-700",
 ]);
+
+const createColumn = () => {
+  if (
+    store.currentBoard?.columns.some(
+      (item) =>
+        item.statusTitle.toLowerCase() === columnTitle.value.toLowerCase()
+    )
+  ) {
+    store.showAlertMsg("Column with this name already exists!");
+    return;
+  }
+  const column: statuses = {
+    statusTitle: columnTitle.value,
+    badge: badge.value,
+  };
+  store.currentBoard?.columns.push(column);
+  store.saveToLocalStorage(store.boards);
+
+  store.alert = false;
+  store.showAlertMsg(`Column "${columnTitle.value}" created!`, "succeed");
+};
 </script>
 
 <style scoped></style>

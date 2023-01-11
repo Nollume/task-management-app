@@ -16,7 +16,7 @@
     </div>
     <div class="grid grid-cols-2 mt-4 gap-4">
       <button
-        @click="store.openModal = false"
+        @click="store.closeModal"
         class="bg-indigo-500 py-2 rounded-md hover:bg-indigo-400"
       >
         Retain
@@ -52,8 +52,8 @@ const deleteBoard = () => {
     localStorage.removeItem("currentBoardId");
     localStorage.removeItem("boards");
   }
-  store.openModal = false;
-  
+  store.closeModal();
+
   store.alert = false;
   store.showAlertMsg(`Board "${boardTitle}" deleted!`, "succeed");
 };
