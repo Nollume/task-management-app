@@ -59,8 +59,11 @@
     <Transition name="fadeIn">
       <BoardCreate v-if="!isAnimating" />
     </Transition>
-    <Transition name="fade">
-      <p v-show="openTasksBar" class="uppercase text-xs text-center">
+    <Transition name="fadeIn">
+      <p
+        v-show="openTasksBar && !isAnimating"
+        class="uppercase text-xs text-center"
+      >
         <span v-if="!boards.length">No boards</span>
         <span v-else-if="boards.length === 1">Board ({{ boards.length }})</span>
         <span v-else-if="boards.length > 1"
@@ -68,9 +71,9 @@
         >
       </p>
     </Transition>
-    <Transition name="fade">
+    <Transition name="fadeIn">
       <ul
-        v-show="openTasksBar"
+        v-show="openTasksBar && !isAnimating"
         class="flex flex-col gap-2 divide-y divide-gray-900/10 dark:divide-neutral-200/10"
       >
         <li
@@ -142,20 +145,12 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.fadeIn-enter-active,
-.fade-enter-active {
+.fadeIn-enter-active {
   transition: all 0.25s ease-in;
 }
-.fadeIn-leave-active {
-  transition: all 0.1s ease-out;
-}
-.fadeIn-leave-to {
-  transform: translateX(-100px);
-  opacity: 0;
-}
 
-.fadeIn-enter-from,
-.fade-enter-from {
+
+.fadeIn-enter-from {
   opacity: 0;
   transform: translateX(100px);
 }
