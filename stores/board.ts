@@ -11,7 +11,9 @@ export const useBoardStore = defineStore("board", {
     openModal: false as boolean,
     isOpenModal: false as boolean,
     modalStatus: StatusModals.TASK as string,
+
     openTasksBar: false as boolean,
+    isAnimating: false as boolean,
 
     alertMsg: "" as string,
     alert: false as boolean,

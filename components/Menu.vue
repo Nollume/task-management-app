@@ -1,7 +1,7 @@
 <template>
   <div
     id="menu-container"
-    class="flex flex-col gap-4 absolute top-16 left-2 right-2 bottom-2 p-4 rounded-lg rounded-tl-none duration-300 bg-slate-200 dark:bg-gray-800 z-30 overflow-y-auto overflow-x-hidden sm:max-w-[15rem] lg:static lg:flex lg:mt-14 lg:border-t-4 lg:border-slate-300 lg:dark:border-gray-900 lg:rounded-none"
+    class="flex flex-col gap-4 absolute top-16 left-2 right-2 bottom-2 p-4 rounded-lg rounded-tl-none duration-300 ease-in bg-slate-200 dark:bg-gray-800 z-30 overflow-y-auto overflow-x-hidden sm:max-w-[15rem] lg:static lg:flex lg:mt-14 lg:border-t-4 lg:border-slate-300 lg:dark:border-gray-900 lg:rounded-none"
     :class="openTasksBar ? 'lg:min-w-[15rem] ' : 'hidden  lg:min-w-[5rem]'"
   >
     <div
@@ -21,8 +21,8 @@
     </div>
     <div
       v-if="boards.length"
-      class="flex gap-2 items-center justify-end pb-4 border-b border-gray-900/10 dark:border-neutral-200/10"
-      :class="{ 'lg:flex-col': !store.openTasksBar }"
+      class="flex gap-2 items-center justify-end pb-4 border-gray-900/10 dark:border-neutral-200/10"
+      :class="{ 'lg:flex-col': !store.openTasksBar, 'border-b': !isAnimating }"
     >
       <div
         class="mr-auto p-1.5 cursor-pointer lg:hidden"
@@ -30,69 +30,78 @@
       >
         <IconClose />
       </div>
-      <h2
-        class="hidden lg:flex gap-2 lg:items-center mr-auto capitalize text-lg text-indigo-500"
-        v-show="openTasksBar"
-      >
-        <IconBoard />
-        {{ validateStr(currentBoard?.boardTitle!, 6) }}
-      </h2>
-      <div
-        @click="editBoardOpenModal"
-        class="bg-indigo-500 hover:bg-indigo-400 p-1.5 rounded-md cursor-pointer"
-      >
-        <IconEdit />
-      </div>
-      <div
-        @click="removeBoardOpenModal"
-        class="bg-red-400 hover:bg-red-300 p-1.5 rounded-md cursor-pointer"
-      >
-        <IconRemove />
-      </div>
+      <Transition name="fadeIn" appear>
+        <div
+          v-if="!isAnimating"
+          @click="editBoardOpenModal"
+          class="bg-indigo-500 hover:bg-indigo-400 p-1.5 rounded-md cursor-pointer"
+        >
+          <IconEdit />
+        </div>
+      </Transition>
+      <Transition name="fadeIn" appear>
+        <div
+          v-if="!isAnimating"
+          @click="removeBoardOpenModal"
+          class="bg-red-400 hover:bg-red-300 p-1.5 rounded-md cursor-pointer"
+        >
+          <IconRemove />
+        </div>
+      </Transition>
     </div>
-
-    <BoardCreate :class="{ 'vertical-text rotate-180': !openTasksBar }" />
-    <p v-show="openTasksBar" class="uppercase text-xs text-center">
-      <span v-if="!boards.length">No boards</span>
-      <span v-else-if="boards.length === 1">Board ({{ boards.length }})</span>
-      <span v-else-if="boards.length > 1"
-        >All boards ({{ boards.length }})</span
-      >
-    </p>
-    <ul
-      v-show="openTasksBar"
-      class="flex flex-col gap-2 divide-y divide-gray-900/10 dark:divide-neutral-200/10"
+    <div
+      v-else
+      class="mr-auto p-1.5 cursor-pointer lg:hidden"
+      @click="openTasksBar = false"
     >
-      <li
-        v-for="board in boards"
-        :key="board.boardId"
-        @click="toggleBoards(board.boardId)"
-        class="flex gap-2 cursor-pointer hover:text-indigo-400 capitalize pt-1.5"
-        :class="{ 'text-indigo-500': currentBoardId === board.boardId }"
+      <IconClose />
+    </div>
+    <Transition name="fadeIn">
+      <BoardCreate v-if="!isAnimating" />
+    </Transition>
+    <Transition name="fade">
+      <p v-show="openTasksBar" class="uppercase text-xs text-center">
+        <span v-if="!boards.length">No boards</span>
+        <span v-else-if="boards.length === 1">Board ({{ boards.length }})</span>
+        <span v-else-if="boards.length > 1"
+          >All boards ({{ boards.length }})</span
+        >
+      </p>
+    </Transition>
+    <Transition name="fade">
+      <ul
+        v-show="openTasksBar"
+        class="flex flex-col gap-2 divide-y divide-gray-900/10 dark:divide-neutral-200/10"
       >
-        <IconBoard />
-        <p :title="board.boardTitle">
-          {{ validateStr(board.boardTitle, 12) }}
-        </p>
-      </li>
-    </ul>
-
-    <setColorTheme
-      class="sm:w-52 sm:self-center lg:w-auto"
-      :class="{
-        'lg:vertical-text lg:rotate-180 lg:py-4 lg:px-2': !openTasksBar,
-      }"
-    />
+        <li
+          v-for="board in boards"
+          :key="board.boardId"
+          @click="toggleBoards(board.boardId)"
+          class="flex gap-2 cursor-pointer hover:text-indigo-400 capitalize pt-1.5"
+          :class="{ 'text-indigo-500': currentBoardId === board.boardId }"
+        >
+          <IconBoard />
+          <p class="truncate" :title="board.boardTitle">
+            {{ board.boardTitle }}
+          </p>
+        </li>
+      </ul>
+    </Transition>
+    <Transition name="fadeIn">
+      <setColorTheme
+        v-show="!isAnimating"
+        class="sm:w-52 sm:self-center lg:w-auto"
+      />
+    </Transition>
   </div>
 </template>
 
 <script setup lang="ts">
-import { validateStr } from "@/helpers/helper";
 import { StatusModals } from "~/interfaces";
 import { storeToRefs } from "pinia";
 import { useBoardStore } from "~/stores/board";
 const store = useBoardStore();
-const { openTasksBar, openModal, boards, currentBoardId, currentBoard } =
+const { openTasksBar, openModal, boards, currentBoardId, isAnimating } =
   storeToRefs(store);
 
 const removeBoardOpenModal = () => {
@@ -131,3 +140,23 @@ onUnmounted(() => {
   document.removeEventListener("click", closeTaskBar);
 });
 </script>
+
+<style scoped>
+.fadeIn-enter-active,
+.fade-enter-active {
+  transition: all 0.25s ease-in;
+}
+.fadeIn-leave-active {
+  transition: all 0.1s ease-out;
+}
+.fadeIn-leave-to {
+  transform: translateX(-100px);
+  opacity: 0;
+}
+
+.fadeIn-enter-from,
+.fade-enter-from {
+  opacity: 0;
+  transform: translateX(100px);
+}
+</style>

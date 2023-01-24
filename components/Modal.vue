@@ -10,7 +10,7 @@
           class="w-[90%] max-w-xl p-4 rounded-xl bg-slate-200 dark:bg-gray-800 max-h-screen overflow-y-auto relative"
         >
           <div class="flex items-center justify-between mb-4">
-            <h3 v-if="!store.editableCard" class="text-lg capitalize">
+            <h3 v-if="!store.editableCard" class="text-lg capitalize max-w-[85%]">
               <slot name="title" />
             </h3>
             <div v-else class="w-full">
@@ -32,11 +32,13 @@
               </div>
             </div>
 
-            <IconClose
-              @click="store.closeModal"
-              class="ml-3"
-              :class="{ 'self-start': store.editableCard }"
-            />
+            <div class="min-w-[1rem]" >
+              <IconClose
+                @click="store.closeModal"
+                class="ml-3"
+                :class="{ 'self-start': store.editableCard }"
+              />
+            </div>
           </div>
           <slot name="description" />
           <slot name="form" />

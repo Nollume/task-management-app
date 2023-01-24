@@ -40,20 +40,11 @@
                 class="bg-slate-200 dark:bg-gray-800 p-4 shadow-sm rounded-xl cursor-pointer border-2 border-gray-900/10 dark:border-neutral-200/10 hover:border-indigo-500 hover:dark:border-indigo-500"
               >
                 <h5
-                  class="pb-2 border-b border-gray-900/10 dark:border-neutral-200/10 capitalize sm:hidden"
+                  class="pb-2 border-b border-gray-900/10 dark:border-neutral-200/10 capitalize truncate"
                 >
-                  {{ validateStr(task.taskTitle, 13) }}
+                  {{ task.taskTitle }}
                 </h5>
-                <h5
-                  class="hidden pb-2 border-b border-gray-900/10 dark:border-neutral-200/10 capitalize sm:block lg:hidden"
-                >
-                  {{ validateStr(task.taskTitle, 30) }}
-                </h5>
-                <h5
-                  class="hidden pb-2 border-b border-gray-900/10 dark:border-neutral-200/10 capitalize lg:block"
-                >
-                  {{ validateStr(task.taskTitle, 23) }}
-                </h5>
+
                 <p
                   v-if="task.subtasks.length > 1"
                   class="text-sm pt-2 opacity-75"
@@ -89,11 +80,9 @@
 import { StatusModals, subtask } from "@/interfaces";
 import { storeToRefs } from "pinia";
 import { useBoardStore } from "~/stores/board";
-import { validateStr } from "@/helpers/helper";
 
 const store = useBoardStore();
-const { boards, currentBoard, currentCardId, modalStatus } =
-  storeToRefs(store);
+const { boards, currentBoard, currentCardId, modalStatus } = storeToRefs(store);
 
 const tasksLength = (columnStatus: string) => {
   const taskLength = currentBoard.value?.tasks.filter(

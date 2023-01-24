@@ -14,8 +14,8 @@
         r="10"
         class="progress stroke-indigo-500"
         :class="{
-          'stroke-amber-600': titleLength > warning && titleLength < danger,
-          'stroke-red-600': titleLength >= danger,
+          'stroke-amber-600': hasWarning,
+          'stroke-red-600': hasDanger,
           tragedy: store.maxTitleLength === titleLength,
         }"
         :style="{
@@ -26,6 +26,10 @@
     </svg>
     <span
       class="text-xs absolute top-1/2 -translate-y-1/2 right-1/2 translate-x-1/2"
+      :class="{
+        'text-amber-600': hasWarning,
+        'text-red-600': hasDanger,
+      }"
       >{{ store.maxTitleLength - titleLength }}</span
     >
   </div>
@@ -42,6 +46,13 @@ const pathLenght = ref<number>();
 
 const warning = ref<number>(Math.floor(store.maxTitleLength * (3 / 4)));
 const danger = ref<number>(Math.floor(store.maxTitleLength * (3.8 / 4)));
+
+const hasWarning = computed<boolean>(() => {
+  return props.titleLength > warning.value && props.titleLength < danger.value;
+});
+const hasDanger = computed<boolean>(() => {
+  return props.titleLength >= danger.value;
+});
 
 const animateCircle = () => {
   const percent = props.titleLength / store.maxTitleLength;

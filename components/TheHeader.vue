@@ -11,7 +11,7 @@
     <div
       id="headline-container"
       class="flex items-center gap-2 relative headline-container cursor-pointer"
-      @click.prevent="openTasksBar = !openTasksBar"
+      @click.prevent="toggleMenu"
     >
       <svg
         class="arrow fill-current w-5 h-5 transition-transform duration-300 ease-in-out"
@@ -30,11 +30,8 @@
         >
           {{ validateStr(currentBoard?.boardTitle!) }}
         </h2>
-        <h2
-          class="capitalize text-lg hidden sm:block"
-          :title="currentBoard?.boardTitle"
-        >
-          {{ validateStr(currentBoard?.boardTitle!, 30) }}
+        <h2 class="capitalize text-lg hidden sm:block">
+          {{ currentBoard?.boardTitle! }}
         </h2>
       </template>
     </div>
@@ -47,7 +44,18 @@ import { validateStr } from "@/helpers/helper";
 import { storeToRefs } from "pinia";
 import { useBoardStore } from "~/stores/board";
 const store = useBoardStore();
-const { openTasksBar, currentBoardId, currentBoard } = storeToRefs(store);
+const { openTasksBar, currentBoardId, currentBoard, isAnimating } =
+  storeToRefs(store);
+
+let timer: ReturnType<typeof setTimeout>;
+const toggleMenu = () => {
+  clearTimeout(timer);
+  isAnimating.value = true;
+  openTasksBar.value = !openTasksBar.value;
+  timer = setTimeout(() => {
+    isAnimating.value = false;
+  }, 300);
+};
 </script>
 
 <style scoped></style>
