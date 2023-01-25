@@ -9,7 +9,7 @@
   <div
     v-else
     @click="newBoardOpenModal"
-    class="text-xl mx-auto flex items-center justify-center w-8 h-8 bg-indigo-500 text-neutral-200 rounded-md"
+    class="text-xl mx-auto flex items-center justify-center w-8 h-8 bg-indigo-500 hover:bg-indigo-400 text-neutral-200 rounded-md cursor-pointer select-none"
   >
     +
   </div>
