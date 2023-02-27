@@ -2,7 +2,7 @@
   <main
     class="flex-1 flex relative items-start justify-start bg-slate-300 dark:bg-gray-900 z-20 overflow-y-auto"
   >
-    <BoardCreate
+    <BoardCreatyOnInitial
       class="absolute inset-4 text-2xl whitespace-nowrap rounded-xl bg-slate-200/40 dark:bg-gray-800/40"
       v-if="!boards.length"
     />
